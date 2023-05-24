@@ -22,6 +22,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        playerMovement.MovePlayer(inputManager.directionalInput);
+        playerMovement.HandleMovement(inputManager.directionalInput);
     }
 }
