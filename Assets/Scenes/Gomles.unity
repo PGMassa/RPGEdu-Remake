@@ -2142,6 +2142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 708616422}
   - component: {fileID: 708616421}
+  - component: {fileID: 708616423}
   m_Layer: 0
   m_Name: CM FreeLook1
   m_TagString: Untagged
@@ -2190,7 +2191,7 @@ MonoBehaviour:
   m_YAxis:
     Value: 0.5
     m_SpeedMode: 0
-    m_MaxSpeed: 1.5
+    m_MaxSpeed: 0.5
     m_AccelTime: 0.2
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -2214,7 +2215,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 250
+    m_MaxSpeed: 75
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -2271,6 +2272,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &708616423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708616420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerIndex: -1
+  AutoEnableInputs: 1
+  XYAxis: {fileID: -3658813349657254460, guid: bdcbcf23a61da324cba43e78abb39412, type: 3}
+  ZAxis: {fileID: 0}
 --- !u!1001 &714267425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4492,7 +4509,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241915668}
-  m_LocalRotation: {x: 0.08604598, y: -0.009388974, z: 0.00081092713, w: 0.99624664}
+  m_LocalRotation: {x: 0.08604598, y: -0.0093889395, z: 0.00081092416, w: 0.99624664}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

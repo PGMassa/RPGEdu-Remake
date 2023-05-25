@@ -2,7 +2,7 @@
     "name": "PlayerInputs",
     "maps": [
         {
-            "name": "Movement",
+            "name": "PlayerControls",
             "id": "926958f4-7d51-40b5-b76c-78985319f3b2",
             "actions": [
                 {
@@ -19,6 +19,15 @@
                     "type": "Button",
                     "id": "2e05f373-8d4f-4807-97c4-f4f3c4b1eaba",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CameraRotation",
+                    "type": "PassThrough",
+                    "id": "cee81996-03e8-4c08-adde-4800172dd43d",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -143,6 +152,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0776d35c-069f-4a9b-87fb-f350eeb7259c",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

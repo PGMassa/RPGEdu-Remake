@@ -24,7 +24,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputs"",
     ""maps"": [
         {
-            ""name"": ""Movement"",
+            ""name"": ""PlayerControls"",
             ""id"": ""926958f4-7d51-40b5-b76c-78985319f3b2"",
             ""actions"": [
                 {
@@ -41,6 +41,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""2e05f373-8d4f-4807-97c4-f4f3c4b1eaba"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotation"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""cee81996-03e8-4c08-adde-4800172dd43d"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -167,16 +176,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0776d35c-069f-4a9b-87fb-f350eeb7259c"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // Movement
-        m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-        m_Movement_DirectionalMovement = m_Movement.FindAction("DirectionalMovement", throwIfNotFound: true);
-        m_Movement_Sprint = m_Movement.FindAction("Sprint", throwIfNotFound: true);
+        // PlayerControls
+        m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
+        m_PlayerControls_DirectionalMovement = m_PlayerControls.FindAction("DirectionalMovement", throwIfNotFound: true);
+        m_PlayerControls_Sprint = m_PlayerControls.FindAction("Sprint", throwIfNotFound: true);
+        m_PlayerControls_CameraRotation = m_PlayerControls.FindAction("CameraRotation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -235,35 +256,40 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Movement
-    private readonly InputActionMap m_Movement;
-    private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
-    private readonly InputAction m_Movement_DirectionalMovement;
-    private readonly InputAction m_Movement_Sprint;
-    public struct MovementActions
+    // PlayerControls
+    private readonly InputActionMap m_PlayerControls;
+    private List<IPlayerControlsActions> m_PlayerControlsActionsCallbackInterfaces = new List<IPlayerControlsActions>();
+    private readonly InputAction m_PlayerControls_DirectionalMovement;
+    private readonly InputAction m_PlayerControls_Sprint;
+    private readonly InputAction m_PlayerControls_CameraRotation;
+    public struct PlayerControlsActions
     {
         private @PlayerInputs m_Wrapper;
-        public MovementActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DirectionalMovement => m_Wrapper.m_Movement_DirectionalMovement;
-        public InputAction @Sprint => m_Wrapper.m_Movement_Sprint;
-        public InputActionMap Get() { return m_Wrapper.m_Movement; }
+        public PlayerControlsActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DirectionalMovement => m_Wrapper.m_PlayerControls_DirectionalMovement;
+        public InputAction @Sprint => m_Wrapper.m_PlayerControls_Sprint;
+        public InputAction @CameraRotation => m_Wrapper.m_PlayerControls_CameraRotation;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MovementActions set) { return set.Get(); }
-        public void AddCallbacks(IMovementActions instance)
+        public static implicit operator InputActionMap(PlayerControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerControlsActions instance)
         {
-            if (instance == null || m_Wrapper.m_MovementActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_MovementActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Add(instance);
             @DirectionalMovement.started += instance.OnDirectionalMovement;
             @DirectionalMovement.performed += instance.OnDirectionalMovement;
             @DirectionalMovement.canceled += instance.OnDirectionalMovement;
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @CameraRotation.started += instance.OnCameraRotation;
+            @CameraRotation.performed += instance.OnCameraRotation;
+            @CameraRotation.canceled += instance.OnCameraRotation;
         }
 
-        private void UnregisterCallbacks(IMovementActions instance)
+        private void UnregisterCallbacks(IPlayerControlsActions instance)
         {
             @DirectionalMovement.started -= instance.OnDirectionalMovement;
             @DirectionalMovement.performed -= instance.OnDirectionalMovement;
@@ -271,26 +297,30 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @CameraRotation.started -= instance.OnCameraRotation;
+            @CameraRotation.performed -= instance.OnCameraRotation;
+            @CameraRotation.canceled -= instance.OnCameraRotation;
         }
 
-        public void RemoveCallbacks(IMovementActions instance)
+        public void RemoveCallbacks(IPlayerControlsActions instance)
         {
-            if (m_Wrapper.m_MovementActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IMovementActions instance)
+        public void SetCallbacks(IPlayerControlsActions instance)
         {
-            foreach (var item in m_Wrapper.m_MovementActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PlayerControlsActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_MovementActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public MovementActions @Movement => new MovementActions(this);
-    public interface IMovementActions
+    public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+    public interface IPlayerControlsActions
     {
         void OnDirectionalMovement(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnCameraRotation(InputAction.CallbackContext context);
     }
 }

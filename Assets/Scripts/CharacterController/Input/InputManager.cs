@@ -23,7 +23,7 @@ public class InputManager : MonoBehaviour
         {
             playerInputs = new PlayerInputs();
 
-            playerInputs.Movement.DirectionalMovement.performed += i => directionalInput = i.ReadValue<Vector2>();
+            playerInputs.PlayerControls.DirectionalMovement.performed += i => directionalInput = i.ReadValue<Vector2>();
         }
 
         playerInputs.Enable();
