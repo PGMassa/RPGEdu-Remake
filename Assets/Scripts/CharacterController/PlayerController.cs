@@ -7,21 +7,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(InputManager), typeof(PlayerMovement))]
+[RequireComponent(typeof(InputManager), typeof(PlayerMovement), typeof(PlayerAnimation))]
 public class PlayerController : MonoBehaviour
 {
     // Other player controller classes
     private InputManager inputManager;
-    private PlayerMovement playerMovement; 
+    private PlayerMovement playerMovement;
+    private PlayerAnimation playerAnimation;
 
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     private void FixedUpdate()
     {
-        playerMovement.HandleMovement(inputManager.directionalInput);
+        Vector2 directionalInput = inputManager.directionalInput;
+
+        playerMovement.HandleMovement(directionalInput);
+        playerAnimation.HandleWalkingAnimation(directionalInput, false);
     }
 }
