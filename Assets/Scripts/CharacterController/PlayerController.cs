@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
         Vector2 directionalInput = inputManager.directionalInput;
         bool isSprinting = inputManager.isSprinting;
 
-        playerMovement.HandleMovement(directionalInput);
+        playerMovement.HandleMovement(directionalInput, isSprinting);
         playerAnimation.HandleWalkingAnimation(directionalInput, isSprinting);
     }
 }
