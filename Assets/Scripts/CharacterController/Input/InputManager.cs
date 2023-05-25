@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
 
     // All the input values must have a public Get and a private Set
     public Vector2 directionalInput { get; private set; } //WASD input
+    public bool isSprinting { get; private set; }
 
     private void OnEnable()
     {
@@ -24,6 +25,9 @@ public class InputManager : MonoBehaviour
             playerInputs = new PlayerInputs();
 
             playerInputs.PlayerControls.DirectionalMovement.performed += i => directionalInput = i.ReadValue<Vector2>();
+
+            playerInputs.PlayerControls.Sprint.started += i => isSprinting = true;
+            playerInputs.PlayerControls.Sprint.canceled += i => isSprinting = false;
         }
 
         playerInputs.Enable();

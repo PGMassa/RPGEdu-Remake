@@ -25,8 +25,9 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 directionalInput = inputManager.directionalInput;
+        bool isSprinting = inputManager.isSprinting;
 
         playerMovement.HandleMovement(directionalInput);
-        playerAnimation.HandleWalkingAnimation(directionalInput, false);
+        playerAnimation.HandleWalkingAnimation(directionalInput, isSprinting);
     }
 }
