@@ -22,7 +22,7 @@ public class PlayerAnimation : MonoBehaviour
     public void HandleWalkingAnimation(Vector2 directionalInput, bool sprinting)
     {
         float speedValue = directionalInput == Vector2.zero ? 0 : 1;
-        if (sprinting) speedValue *= 2;
+        if (sprinting) speedValue *= 1.75f;
 
         animator.SetFloat(speedParameter, speedValue);
     }

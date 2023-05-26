@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.visible = false; // here temporarily - move to a more apropriate class later
+
         inputManager = GetComponent<InputManager>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
