@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private float rotationSpeedSprinting;
 
     private Transform cameraTransform; // Required for calculating movementDirection
     private Rigidbody rb;
@@ -34,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer(directionalInput, isSprinting);
 
         // Rotation only happens if there is an input
-        if (directionalInput != Vector2.zero) RotatePlayer(directionalInput);
+        if (directionalInput != Vector2.zero) RotatePlayer(directionalInput, isSprinting);
     }
 
     // Calculates the movement velocity and sets it to the rigidbody
@@ -52,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Rotates the player to match the movement direction
-    private void RotatePlayer(Vector2 directionalInput)
+    private void RotatePlayer(Vector2 directionalInput, bool isSprinting)
     {
         Quaternion targetRotation;
 
@@ -63,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
         rotationDirection.y = 0;
 
         targetRotation = Quaternion.LookRotation(rotationDirection);
-        rb.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        rb.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 
+            (isSprinting? rotationSpeedSprinting : rotationSpeed) * Time.deltaTime);
     }
 }
