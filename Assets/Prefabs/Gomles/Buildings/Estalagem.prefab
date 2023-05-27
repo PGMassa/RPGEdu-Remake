@@ -11,12 +11,14 @@ GameObject:
   - component: {fileID: 744802363328310950}
   - component: {fileID: 4465822988578660611}
   - component: {fileID: 1881727362703414729}
+  - component: {fileID: 6882895006936084056}
+  - component: {fileID: 8327161188488313935}
   m_Layer: 0
   m_Name: Estalagem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &744802363328310950
 Transform:
@@ -89,3 +91,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6882895006936084056
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80432991737639964}
+  m_Material: {fileID: 13400000, guid: b65327e8b7c0b0747992212a3847f3f1, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.7831764, y: 8.875982, z: 14.316133}
+  m_Center: {x: 1.1083126, y: -0.06093788, z: 0.04209757}
+--- !u!65 &8327161188488313935
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80432991737639964}
+  m_Material: {fileID: 13400000, guid: b65327e8b7c0b0747992212a3847f3f1, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7020035, y: 0.95500755, z: 5.817957}
+  m_Center: {x: -3.9254036, y: -4.098114, z: -2.7928572}

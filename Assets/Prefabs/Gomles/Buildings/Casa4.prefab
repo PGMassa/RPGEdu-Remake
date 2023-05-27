@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 7941792750313706923}
   - component: {fileID: 6456246484520638990}
   - component: {fileID: 9114659686495776452}
+  - component: {fileID: -8234947345182495549}
   m_Layer: 0
   m_Name: Casa4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7941792750313706923
 Transform:
@@ -89,3 +90,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-8234947345182495549
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7313065971739578129}
+  m_Material: {fileID: 13400000, guid: b65327e8b7c0b0747992212a3847f3f1, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.2494516, y: 4.3451223, z: 2.9968557}
+  m_Center: {x: -0.086155415, y: 0, z: 0}
