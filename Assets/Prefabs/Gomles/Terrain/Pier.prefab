@@ -12,10 +12,6 @@ GameObject:
   - component: {fileID: 5417047539770045507}
   - component: {fileID: 7839024502506078345}
   - component: {fileID: 6552666488667417917}
-  - component: {fileID: 917077714468593018}
-  - component: {fileID: 5488881831264164674}
-  - component: {fileID: 5171437809580461849}
-  - component: {fileID: 7011374864412938406}
   m_Layer: 0
   m_Name: Pier
   m_TagString: Untagged
@@ -99,57 +95,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10.195725, y: 7.9952283, z: 14.125306}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &917077714468593018
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8631486445302505820}
-  m_Material: {fileID: 13400000, guid: b65327e8b7c0b0747992212a3847f3f1, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 6.5, y: 0.5, z: 7.4}
-  m_Center: {x: -1.8, y: 4, z: 0}
---- !u!65 &5488881831264164674
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8631486445302505820}
-  m_Material: {fileID: 13400000, guid: b65327e8b7c0b0747992212a3847f3f1, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 10.19573, y: 0.5, z: 0.21928596}
-  m_Center: {x: 0, y: 4, z: 7.2596426}
---- !u!65 &5171437809580461849
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8631486445302505820}
-  m_Material: {fileID: 13400000, guid: b65327e8b7c0b0747992212a3847f3f1, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 10.19573, y: 0.5, z: 0.13997269}
-  m_Center: {x: 0, y: 4, z: -7.219986}
---- !u!65 &7011374864412938406
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8631486445302505820}
-  m_Material: {fileID: 13400000, guid: b65327e8b7c0b0747992212a3847f3f1, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.23949432, y: 0.5, z: 14.675722}
-  m_Center: {x: 5.1697474, y: 4, z: 0.03575802}
+  m_Size: {x: 10.195725, y: 7.933321, z: 14.125306}
+  m_Center: {x: 0, y: -0.030953407, z: 0}
