@@ -1,11 +1,10 @@
-/*
- * This class is responsible for interacting with the Animator and setting its parameters
- */
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class is responsible for interacting with the Animator and setting its parameters
+ */
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimation : MonoBehaviour
 {

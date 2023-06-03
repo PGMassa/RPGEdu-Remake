@@ -53,6 +53,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""a97cf966-e214-4785-a1ac-f6ce017dea7c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -187,6 +196,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c137a63-6d11-4d8d-b014-f828ce90ea87"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -198,6 +218,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_PlayerControls_DirectionalMovement = m_PlayerControls.FindAction("DirectionalMovement", throwIfNotFound: true);
         m_PlayerControls_Sprint = m_PlayerControls.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerControls_CameraRotation = m_PlayerControls.FindAction("CameraRotation", throwIfNotFound: true);
+        m_PlayerControls_Interact = m_PlayerControls.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,6 +283,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_DirectionalMovement;
     private readonly InputAction m_PlayerControls_Sprint;
     private readonly InputAction m_PlayerControls_CameraRotation;
+    private readonly InputAction m_PlayerControls_Interact;
     public struct PlayerControlsActions
     {
         private @PlayerInputs m_Wrapper;
@@ -269,6 +291,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @DirectionalMovement => m_Wrapper.m_PlayerControls_DirectionalMovement;
         public InputAction @Sprint => m_Wrapper.m_PlayerControls_Sprint;
         public InputAction @CameraRotation => m_Wrapper.m_PlayerControls_CameraRotation;
+        public InputAction @Interact => m_Wrapper.m_PlayerControls_Interact;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -287,6 +310,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @CameraRotation.started += instance.OnCameraRotation;
             @CameraRotation.performed += instance.OnCameraRotation;
             @CameraRotation.canceled += instance.OnCameraRotation;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IPlayerControlsActions instance)
@@ -300,6 +326,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @CameraRotation.started -= instance.OnCameraRotation;
             @CameraRotation.performed -= instance.OnCameraRotation;
             @CameraRotation.canceled -= instance.OnCameraRotation;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IPlayerControlsActions instance)
@@ -322,5 +351,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnDirectionalMovement(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

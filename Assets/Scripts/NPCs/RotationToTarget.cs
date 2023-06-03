@@ -1,11 +1,11 @@
-/*
- * This class only rotates the npc in the direction of the player
- */
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class only rotates the npc in the direction of the player
+ */
+[RequireComponent(typeof(Rigidbody))]
 public class RotationToTarget : MonoBehaviour
 {
     [SerializeField] private Transform targetTransform;

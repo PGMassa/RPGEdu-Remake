@@ -1,12 +1,10 @@
-
-/*
- * This class is responsible for all physical movement of the player, including it's rotation.
- */
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class is responsible for all physical movement of the player, including it's rotation.
+ */
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
