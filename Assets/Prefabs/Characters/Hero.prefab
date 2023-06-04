@@ -382,10 +382,10 @@ GameObject:
   - component: {fileID: 1417627063974394288}
   - component: {fileID: 1228417356}
   - component: {fileID: 1228417357}
-  - component: {fileID: 1228417353}
   - component: {fileID: 1228417354}
   - component: {fileID: 1228417355}
   - component: {fileID: 1417627064033373596}
+  - component: {fileID: 3703878019238362584}
   m_Layer: 8
   m_Name: Hero
   m_TagString: Untagged
@@ -461,18 +461,6 @@ CapsuleCollider:
   m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0, y: -0.15, z: 0.02}
---- !u!114 &1228417353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2264472356160521885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e1b2057d782a9740ae9dc22d07944b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1228417354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,6 +499,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af622d86311808d4fb6d57099866016e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3703878019238362584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2264472356160521885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d39eef4c937a59544bed4e7d8a20f70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2792978141307786673

@@ -1,31 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
  * This class only rotates the npc in the direction of the player
  */
 [RequireComponent(typeof(Rigidbody))]
-public class RotationToTarget : MonoBehaviour
+public class RotateToFacePlayer : MonoBehaviour
 {
-    [SerializeField] private Transform targetTransform;
     [SerializeField] private float rotationSpeed;
+
+    private Transform playerTransform;
 
     private Rigidbody rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Rotate();
     }
 
     private void Rotate()
     {
-        Vector3 targetDirection = targetTransform.position - transform.position;
+        Vector3 targetDirection = playerTransform.position - transform.position;
         targetDirection.y = 0;
 
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
