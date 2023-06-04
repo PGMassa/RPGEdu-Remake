@@ -20,7 +20,6 @@ public class InputManager : MonoBehaviour
     // Player interaction -> PlayerControls ActionMap
     public event Action OnPlayerInteraction;
 
-
     private void Awake()
     {
         if (Instance != null)
