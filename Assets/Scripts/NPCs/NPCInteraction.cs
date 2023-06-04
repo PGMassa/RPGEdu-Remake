@@ -1,21 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCInteraction : MonoBehaviour, IInteractable
 {
+    [SerializeField] string CharacterName;
+
     void IInteractable.DisplayInteractionPrompt()
     {
-        Debug.Log("DisplayInteractionPrompt is not implemented yet");
+        UIManager.Instance.ShowInteractablePromptText("Pressione E para falar com " + CharacterName);
     }
 
     void IInteractable.HideInteractionPrompt()
     {
-        Debug.Log("HideInteractionPrompt is not implemented yet");
+        UIManager.Instance.HideInteratablePromptText();
     }
 
     void IInteractable.Interact()
     {
-        Debug.Log("Interact is not implemented yet");
+        UIManager.Instance.ShowDialogueBox("Hello there");
     }
+
 }
