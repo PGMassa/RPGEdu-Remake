@@ -1,23 +1,24 @@
-using System.Collections;
 using UnityEngine;
 
 public class NPCInteraction : MonoBehaviour, IInteractable
 {
-    [SerializeField] string CharacterName;
+    [Header("NPC Info")]
+    [SerializeField] string characterName;
+    [SerializeField] string testDialogue;
 
     void IInteractable.DisplayInteractionPrompt()
     {
-        UIManager.Instance.ShowInteractablePromptText("Pressione E para falar com " + CharacterName);
+        UIManager.Instance.ShowInteractionPrompt("Pressione E para falar com " + characterName);
     }
 
     void IInteractable.HideInteractionPrompt()
     {
-        UIManager.Instance.HideInteratablePromptText();
+        UIManager.Instance.HideInterationPrompt("Pressione E para falar com " + characterName);
     }
 
     void IInteractable.Interact()
     {
-        UIManager.Instance.ShowDialogueBox("Hello there");
+        UIManager.Instance.StartDialogue(testDialogue);
     }
 
 }

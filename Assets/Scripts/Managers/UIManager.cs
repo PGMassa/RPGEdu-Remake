@@ -1,23 +1,27 @@
 using UnityEngine;
 using TMPro;
 
+/*
+ * This singleton class is responsible for managing other UI related classes, as well as communicating
+ * with the rest of the game.
+ */
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; } // This class is a singleton
 
+    [Header("Dialogue System Components")]
     [SerializeField] private TMP_Text interactablePrompt; // Text used to show that an object/character can be interacted with
 
     [SerializeField] private GameObject dialogueBox;
     [SerializeField] private TMP_Text dialogueText;
 
-    // This bool is true when there is an object nearby asking to show the interactable prompt.
-    // It keeps being true even when the dialogueBox disables the interactable prompt gameObject
-    private bool isInteractablePromptNeeded;
+    private DialogueUI dialogueUI;
 
     private void Awake()
     {
         if (Instance != null)
         {
+            Debug.LogWarning("More than one UIManager component was found on this scene");
             Destroy(gameObject);
         }
         else
@@ -25,46 +29,29 @@ public class UIManager : MonoBehaviour
             Instance = this;
         }
 
-        // Default values for the interface
         Cursor.visible = false;
-        interactablePrompt.text = "";
-        interactablePrompt.gameObject.SetActive(false);
-        isInteractablePromptNeeded = false;
-        dialogueText.text = "";
-        dialogueBox.SetActive(false);
+
+        dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText);
     }
 
-    // Show interactable prompt UI with a new text
-    public void ShowInteractablePromptText(string interatableText)
+    public void ShowInteractionPrompt(string interatableText)
     {
-        interactablePrompt.text = interatableText;
-        isInteractablePromptNeeded = true;
-
-        if(!dialogueBox.activeInHierarchy) interactablePrompt.gameObject.SetActive(true); //dialogue box overrides the prompt
+        dialogueUI.ShowInteractionPrompt(interatableText);
     }
 
-    // Hide interactable promtp UI
-    public void HideInteratablePromptText()
+    public void HideInterationPrompt(string interactableText)
     {
-        interactablePrompt.text = "";
-        isInteractablePromptNeeded = false;
-
-        interactablePrompt.gameObject.SetActive(false);
+        dialogueUI.HideInteractionPrompt(interactableText);
     }
 
-    public void ShowDialogueBox(string firstLine = "")
+    public void StartDialogue(string firstLine = "")
     {
-        dialogueText.text = firstLine;
-        dialogueBox.SetActive(true);
-        interactablePrompt.gameObject.SetActive(false);
+        dialogueUI.StartDialogue(firstLine);
     }
 
-    public void HideDialogueBox()
+    public void EndDialogue()
     {
-        dialogueText.text = "";
-        dialogueBox.SetActive(false);
-        if (isInteractablePromptNeeded) interactablePrompt.gameObject.SetActive(true);
+        dialogueUI.EndDialogue();
     }
-
 
 }

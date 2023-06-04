@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-
 /* 
  * This singleton class is responsible for  enabling and disabling the InputSystem, as well as
  * changing ActionMaps(not yet implemented). It also stores the player inputs and make them available 
@@ -24,6 +23,7 @@ public class InputManager : MonoBehaviour
     {
         if (Instance != null)
         {
+            Debug.LogWarning("More than one InputManager component was found on this scene");
             Destroy(gameObject);
         }
         else
