@@ -187,6 +187,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "DialogueUI",
+            "id": "4779d09a-6285-4c01-898a-60bd585a28f0",
+            "actions": [
+                {
+                    "name": "NextLine",
+                    "type": "Button",
+                    "id": "6acba50c-0e65-4dd7-9163-9808a0699eaa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2414be79-9e18-453c-98f6-a273b643ffc4",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextLine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38e5a95c-1993-4041-8a7d-c8e1b746378f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextLine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

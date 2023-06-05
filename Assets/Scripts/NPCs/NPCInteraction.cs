@@ -1,24 +1,34 @@
 using UnityEngine;
 
+/*
+ * This class is responsible for the IInteractables npcs
+ * It tells the UI when to show the Interaction Prompt and 
+ * tells the DialogueManager when to start a dialogue
+ */
 public class NPCInteraction : MonoBehaviour, IInteractable
 {
     [Header("NPC Info")]
-    [SerializeField] string characterName;
-    [SerializeField] string testDialogue;
+    [SerializeField] private string characterName;
+    [SerializeField] private string interactionPromptText;
+
+    void Awake()
+    {
+        interactionPromptText += " " + characterName;
+    }
 
     void IInteractable.DisplayInteractionPrompt()
     {
-        UIManager.Instance.ShowInteractionPrompt("Pressione E para falar com " + characterName);
+        UIManager.Instance.ShowInteractionPrompt(interactionPromptText);
     }
 
     void IInteractable.HideInteractionPrompt()
     {
-        UIManager.Instance.HideInterationPrompt("Pressione E para falar com " + characterName);
+        UIManager.Instance.HideInterationPrompt(interactionPromptText);
     }
 
     void IInteractable.Interact()
     {
-        UIManager.Instance.StartDialogue(testDialogue);
+        DialogueManager.Instance.StartDialogueWith(characterName);
     }
 
 }

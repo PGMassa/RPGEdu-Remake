@@ -19,6 +19,9 @@ public class InputManager : MonoBehaviour
     // Player interaction -> PlayerControls ActionMap
     public event Action OnPlayerInteraction;
 
+    // Next dialogue line -> DialogueUI ActionMap
+    public event Action OnNextLine;
+
     private void Awake()
     {
         if (Instance != null)
@@ -38,6 +41,7 @@ public class InputManager : MonoBehaviour
         {
             playerInputs = new PlayerInputs();
 
+            // PlayerControls callbacks
             playerInputs.PlayerControls.DirectionalMovement.performed += i => directionalInput = i.ReadValue<Vector2>();
 
             playerInputs.PlayerControls.Sprint.started += i => isSprinting = true;
@@ -45,6 +49,8 @@ public class InputManager : MonoBehaviour
 
             playerInputs.PlayerControls.Interact.performed += i => OnPlayerInteraction?.Invoke();
 
+            // UIDialogue callbacks
+            playerInputs.DialogueUI.NextLine.performed += i => OnNextLine?.Invoke();
         }
 
         playerInputs.Enable();
@@ -53,6 +59,20 @@ public class InputManager : MonoBehaviour
     private void OnDisable()
     {
         playerInputs.Disable();
+    }
+
+    // Change current ActionMap to DialogueUI
+    public void EnableDialogueUI()
+    {
+        playerInputs.PlayerControls.Disable();
+        playerInputs.DialogueUI.Enable();
+    }
+
+    // Change current ActionMap to PlayerControls
+    public void EnablePlayerControls()
+    {
+        playerInputs.DialogueUI.Disable();
+        playerInputs.PlayerControls.Enable();
     }
 
 }

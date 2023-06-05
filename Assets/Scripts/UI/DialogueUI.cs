@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 /*
- * This class is responsible for managing everything related to dialogue/interactable object UI.
+ * This class is responsible for controlling every UI component related to dialogue/interactable.
  * It decides which UI components to keep on the screen at each moment, and updates the value
  * of the text components associated with them.
  */
@@ -39,6 +39,7 @@ public class DialogueUI
         dialogueBox.SetActive(false);
     }
 
+    //InteractionPrompt-related methods
     public void ShowInteractionPrompt(string promptText)
     {
         // If some other object is already using the interaction prompt, store the old object's message
@@ -63,12 +64,14 @@ public class DialogueUI
         }
         else
         {
-            // If the message to hide is not currently being displayed, then we only need to take it out of the stack
+            // If the message to hide is not currently being displayed, then we only need to take it out of the "stack"
             promptTextStack.Remove(promptText);
         }
     }
 
-    public void StartDialogue(string firstLine = "")
+
+    //DialogueBox-related methods
+    public void StartDialogueUI(string firstLine = "")
     {
         interactablePrompt.gameObject.SetActive(false);
 
@@ -76,7 +79,12 @@ public class DialogueUI
         dialogueBox.SetActive(true);
     }
 
-    public void EndDialogue() 
+    public void UpdateDialogueText(string dialogueLine)
+    {
+        dialogueText.text = dialogueLine;
+    }
+
+    public void CloseDialogueUI() 
     {
         interactablePrompt.gameObject.SetActive(true);
 

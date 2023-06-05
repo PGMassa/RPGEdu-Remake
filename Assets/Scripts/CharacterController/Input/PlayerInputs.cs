@@ -209,6 +209,45 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DialogueUI"",
+            ""id"": ""4779d09a-6285-4c01-898a-60bd585a28f0"",
+            ""actions"": [
+                {
+                    ""name"": ""NextLine"",
+                    ""type"": ""Button"",
+                    ""id"": ""6acba50c-0e65-4dd7-9163-9808a0699eaa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2414be79-9e18-453c-98f6-a273b643ffc4"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextLine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38e5a95c-1993-4041-8a7d-c8e1b746378f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextLine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -219,6 +258,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_PlayerControls_Sprint = m_PlayerControls.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerControls_CameraRotation = m_PlayerControls.FindAction("CameraRotation", throwIfNotFound: true);
         m_PlayerControls_Interact = m_PlayerControls.FindAction("Interact", throwIfNotFound: true);
+        // DialogueUI
+        m_DialogueUI = asset.FindActionMap("DialogueUI", throwIfNotFound: true);
+        m_DialogueUI_NextLine = m_DialogueUI.FindAction("NextLine", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -346,11 +388,61 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         }
     }
     public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+
+    // DialogueUI
+    private readonly InputActionMap m_DialogueUI;
+    private List<IDialogueUIActions> m_DialogueUIActionsCallbackInterfaces = new List<IDialogueUIActions>();
+    private readonly InputAction m_DialogueUI_NextLine;
+    public struct DialogueUIActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public DialogueUIActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @NextLine => m_Wrapper.m_DialogueUI_NextLine;
+        public InputActionMap Get() { return m_Wrapper.m_DialogueUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DialogueUIActions set) { return set.Get(); }
+        public void AddCallbacks(IDialogueUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DialogueUIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DialogueUIActionsCallbackInterfaces.Add(instance);
+            @NextLine.started += instance.OnNextLine;
+            @NextLine.performed += instance.OnNextLine;
+            @NextLine.canceled += instance.OnNextLine;
+        }
+
+        private void UnregisterCallbacks(IDialogueUIActions instance)
+        {
+            @NextLine.started -= instance.OnNextLine;
+            @NextLine.performed -= instance.OnNextLine;
+            @NextLine.canceled -= instance.OnNextLine;
+        }
+
+        public void RemoveCallbacks(IDialogueUIActions instance)
+        {
+            if (m_Wrapper.m_DialogueUIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDialogueUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DialogueUIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DialogueUIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DialogueUIActions @DialogueUI => new DialogueUIActions(this);
     public interface IPlayerControlsActions
     {
         void OnDirectionalMovement(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+    }
+    public interface IDialogueUIActions
+    {
+        void OnNextLine(InputAction.CallbackContext context);
     }
 }

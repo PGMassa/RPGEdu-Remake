@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 /*
  * This singleton class is responsible for managing other UI related classes, as well as communicating
  * with the rest of the game.
+ * This class does not control UI elements directly.
  */
 public class UIManager : MonoBehaviour
 {
@@ -30,10 +32,15 @@ public class UIManager : MonoBehaviour
         }
 
         Cursor.visible = false;
+    }
 
+    private void Start()
+    {
         dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText);
     }
 
+
+    // InteractionPrompt-related methods
     public void ShowInteractionPrompt(string interatableText)
     {
         dialogueUI.ShowInteractionPrompt(interatableText);
@@ -44,14 +51,21 @@ public class UIManager : MonoBehaviour
         dialogueUI.HideInteractionPrompt(interactableText);
     }
 
-    public void StartDialogue(string firstLine = "")
+
+    // DialogueBox-related methods
+    public void StartDialogueUI(string firstLine = "")
     {
-        dialogueUI.StartDialogue(firstLine);
+        dialogueUI.StartDialogueUI(firstLine);
     }
 
-    public void EndDialogue()
+    public void UpdateDialogueText(string dialogueLine)
     {
-        dialogueUI.EndDialogue();
+        dialogueUI.UpdateDialogueText(dialogueLine);
+    }
+
+    public void CloseDialogueUI()
+    {
+        dialogueUI.CloseDialogueUI();
     }
 
 }
