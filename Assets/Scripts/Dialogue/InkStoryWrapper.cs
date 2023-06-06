@@ -38,19 +38,15 @@ public class InkStoryWrapper
         inkStory.ChoosePathString(npcName); // The main knot of an npc dialogue must have the same name as the npc
     }
 
-    // Returns a list containing all the lines of dialogue an NPC will say until it hits a player choice or the end of the dialogue
-    public List<string> ContinueDialogue()
+    // Returns the next dialogue line
+    public string ContinueDialogue()
     {
+        string dialogueLine = "";
+
         if (!inkStory.canContinue) Debug.LogWarning("Trying to continue a dialogue that has no new lines");
+        else dialogueLine = inkStory.Continue();
 
-        List<string> dialogueLines = new List<string>();
-
-        while (inkStory.canContinue)
-        {
-            dialogueLines.Add(inkStory.Continue());
-        }
-
-        return dialogueLines;
+        return dialogueLine;
     }
 
     // Returns a list of string containing all the choices the player can currently choose from

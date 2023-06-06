@@ -9,11 +9,12 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 {
     [Header("NPC Info")]
     [SerializeField] private string characterName;
-    [SerializeField] private string interactionPromptText;
+
+    private string interactionPromptText;
 
     void Awake()
     {
-        interactionPromptText += " " + characterName;
+        interactionPromptText = "Pressione E parar falar com " + characterName;
     }
 
     void IInteractable.DisplayInteractionPrompt()

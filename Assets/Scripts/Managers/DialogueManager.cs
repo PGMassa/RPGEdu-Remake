@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 /*
@@ -8,6 +8,18 @@ using UnityEngine;
  * This class also informs other classes about changes necessary to the UI, 
  * ActionMaps, etc. (change this to use to events later).
  */
+
+/*
+ * TODO: 
+ * Task1: Check the original game, and then change the choice buttons UI to try reproducing the original look as closely as possible
+ *      
+ * Task2: Threat the case where there are more choices than buttons
+ * 
+ * Task3: Add the actions of the UIDialogue actionmap to the UI actionmap an implement a better way to enable/disable the choices action
+ * 
+ * Task3: Refactor the dialogue code so it used events instead of direct calls to methods
+ * 
+ */
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; } // This class is a singleton
@@ -16,8 +28,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextAsset inkAsset;
 
     private InkStoryWrapper inkStoryWrapper;
-
-    private Queue<string> dialogueLinesQueue;
 
     private void Awake()
     {
@@ -43,7 +53,6 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogueWith(string npcName)
     {
         inkStoryWrapper.StartDialogueWith(npcName);
-        dialogueLinesQueue = new Queue<string>();
 
         // --> Remember to change it to Events later, after testing <--
         UIManager.Instance.StartDialogueUI();
@@ -56,33 +65,26 @@ public class DialogueManager : MonoBehaviour
     // It gets the new dialogue options/dialogue lines from the InkStoryWrapper and send them to the UI
     public void ContinueDialogue()
     {
-        if (dialogueLinesQueue.Count != 0)
-        {
-            // Send next line of dialogue to the UI manager
-            // --> Remember to change it to Events later, after testing <--
-            UIManager.Instance.UpdateDialogueText(dialogueLinesQueue.Dequeue());
-            return;
-        }
-
         if (inkStoryWrapper.canContinue)
         {
-            // get new lines of dialogue and send the first to the UI
-            dialogueLinesQueue = new Queue<string>(inkStoryWrapper.ContinueDialogue());
-            // --> Remember to change it to Events later, after testing <--
-            UIManager.Instance.UpdateDialogueText(dialogueLinesQueue.Dequeue());
-            return;
+            UIManager.Instance.UpdateDialogueText(inkStoryWrapper.ContinueDialogue());
         }
 
-        if (inkStoryWrapper.choicesCount > 0)
+        if(inkStoryWrapper.choicesCount > 0)
         {
-            // gets current choices and send them to the UI
-            List<string> currentChoices = inkStoryWrapper.GetCurrentChoices();
-            // --> Remember to change it to Events later, after testing <--
-            Debug.Log("UI manager does not implement choices yet. Implement it before calling this method");
-            return;
-        }
+            StartCoroutine(EnablePlayerChoices());
 
-        EndDialogue();
+        }else if (!inkStoryWrapper.canContinue) EndDialogue();
+
+    }
+
+    // This method is called by the OnClick event on the choice buttons
+    public void MakeChoice(int choiceIndex)
+    {
+        inkStoryWrapper.MakeChoice(choiceIndex);
+        StartCoroutine(DisablePlayerChoices());
+
+        ContinueDialogue();
     }
 
     private void EndDialogue()
@@ -90,6 +92,24 @@ public class DialogueManager : MonoBehaviour
         // --> Remember to change it to Events later, after testing <--
         UIManager.Instance.CloseDialogueUI();
         InputManager.Instance.EnablePlayerControls();
+    }
+
+    private IEnumerator EnablePlayerChoices()
+    {
+        yield return new WaitForEndOfFrame();
+
+        UIManager.Instance.DisplayDialogueChoices(inkStoryWrapper.GetCurrentChoices());
+        InputManager.Instance.EnableUI();
+    }
+
+    private IEnumerator DisablePlayerChoices()
+    {
+        yield return new WaitForEndOfFrame();
+
+        // --> Remember to change it to Events later, after testing <--
+        UIManager.Instance.HideDialogueChoices();
+
+        InputManager.Instance.EnableDialogueUI();
     }
 
 }

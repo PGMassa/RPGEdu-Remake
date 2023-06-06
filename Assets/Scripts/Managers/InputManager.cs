@@ -54,6 +54,8 @@ public class InputManager : MonoBehaviour
         }
 
         playerInputs.Enable();
+        EnablePlayerControls(); //default action map
+        playerInputs.UI.Enable(); //UI always enabled? <- test it later
     }
 
     private void OnDisable()
@@ -66,6 +68,7 @@ public class InputManager : MonoBehaviour
     {
         playerInputs.PlayerControls.Disable();
         playerInputs.DialogueUI.Enable();
+        playerInputs.UI.Disable();
     }
 
     // Change current ActionMap to PlayerControls
@@ -73,6 +76,14 @@ public class InputManager : MonoBehaviour
     {
         playerInputs.DialogueUI.Disable();
         playerInputs.PlayerControls.Enable();
+        playerInputs.UI.Disable();
+    }
+
+    public void EnableUI()
+    {
+        playerInputs.DialogueUI.Disable();
+        playerInputs.PlayerControls.Disable();
+        playerInputs.UI.Enable();
     }
 
 }

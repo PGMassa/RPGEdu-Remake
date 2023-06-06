@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject dialogueBox;
     [SerializeField] private TMP_Text dialogueText;
 
+    [SerializeField] private List<GameObject> dialogueChoiceButtons;
+
     private DialogueUI dialogueUI;
 
     private void Awake()
@@ -31,12 +33,13 @@ public class UIManager : MonoBehaviour
             Instance = this;
         }
 
-        Cursor.visible = false;
+        Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Start()
     {
-        dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText);
+        dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText, dialogueChoiceButtons);
     }
 
 
@@ -61,6 +64,16 @@ public class UIManager : MonoBehaviour
     public void UpdateDialogueText(string dialogueLine)
     {
         dialogueUI.UpdateDialogueText(dialogueLine);
+    }
+
+    public void DisplayDialogueChoices(List<string> currentChoices)
+    {
+        dialogueUI.DisplayDialogueChoices(currentChoices);
+    }
+
+    public void HideDialogueChoices()
+    {
+        dialogueUI.HideDialogueChoices();
     }
 
     public void CloseDialogueUI()
