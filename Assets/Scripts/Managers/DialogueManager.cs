@@ -11,12 +11,8 @@ using UnityEngine;
 
 /*
  * TODO: 
- * Task1: Check the original game, and then change the choice buttons UI to try reproducing the original look as closely as possible
- * 
- * Task2: Add the actions of the UIDialogue actionmap to the UI actionmap an implement a better way to enable/disable the choices action
- * 
- * Task3: Refactor the dialogue code so it used events instead of direct calls to methods
- * 
+ * Task1: Check the original game, and then change the choice buttons UI to try reproducing the original look as closely as possible 
+ * Task2: Refactor the dialogue code so it used events instead of direct calls to methods
  */
 public class DialogueManager : MonoBehaviour
 {
@@ -54,7 +50,7 @@ public class DialogueManager : MonoBehaviour
 
         // --> Remember to change it to Events later, after testing <--
         UIManager.Instance.StartDialogueUI();
-        InputManager.Instance.EnableDialogueUI();
+        InputManager.Instance.SwapActionMap(InputManager.ActionMap.DialogueUI);
 
         ContinueDialogue();
     }
@@ -89,15 +85,16 @@ public class DialogueManager : MonoBehaviour
     {
         // --> Remember to change it to Events later, after testing <--
         UIManager.Instance.CloseDialogueUI();
-        InputManager.Instance.EnablePlayerControls();
+        InputManager.Instance.SwapActionMap(InputManager.ActionMap.PlayerControls);
     }
 
     private IEnumerator EnablePlayerChoices()
     {
         yield return new WaitForEndOfFrame();
 
+        // --> Remember to change it to Events later, after testing <--
         UIManager.Instance.DisplayDialogueChoices(inkStoryWrapper.GetCurrentChoices());
-        InputManager.Instance.EnableUI();
+        InputManager.Instance.SwapActionMap(InputManager.ActionMap.UI);
     }
 
     private IEnumerator DisablePlayerChoices()
@@ -106,8 +103,7 @@ public class DialogueManager : MonoBehaviour
 
         // --> Remember to change it to Events later, after testing <--
         UIManager.Instance.HideDialogueChoices();
-
-        InputManager.Instance.EnableDialogueUI();
+        InputManager.Instance.SwapActionMap(InputManager.ActionMap.DialogueUI);
     }
 
 }

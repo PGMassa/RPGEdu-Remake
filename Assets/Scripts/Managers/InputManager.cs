@@ -8,6 +8,17 @@ using UnityEngine;
  */
 public class InputManager : MonoBehaviour
 {
+    // Used when you want to change the current ActionMap
+    public enum ActionMap
+    {
+        PlayerControls,
+        DialogueUI,
+        UI
+    };
+
+    [Header("Parameters")]
+    [SerializeField] private ActionMap defaultActionMap;
+
     public static InputManager Instance { get; private set; } //this class is a singleton
 
     private PlayerInputs playerInputs; // reference to the InputSystem
@@ -53,9 +64,7 @@ public class InputManager : MonoBehaviour
             playerInputs.DialogueUI.NextLine.performed += i => OnNextLine?.Invoke();
         }
 
-        playerInputs.Enable();
-        EnablePlayerControls(); //default action map
-        playerInputs.UI.Enable(); //UI always enabled? <- test it later
+        SwapActionMap(defaultActionMap); //Enable the default actionMap
     }
 
     private void OnDisable()
@@ -63,28 +72,24 @@ public class InputManager : MonoBehaviour
         playerInputs.Disable();
     }
 
-    // Change current ActionMap to DialogueUI
-    public void EnableDialogueUI()
+    public void SwapActionMap(ActionMap actionMap)
     {
-        playerInputs.PlayerControls.Disable();
-        playerInputs.DialogueUI.Enable();
-        playerInputs.UI.Disable();
+        playerInputs.Disable();
+        switch (actionMap)
+        {
+            case ActionMap.PlayerControls:
+                playerInputs.PlayerControls.Enable();
+                break;
+            case ActionMap.DialogueUI:
+                playerInputs.DialogueUI.Enable();
+                break;
+            case ActionMap.UI:
+                playerInputs.UI.Enable();
+                break;
+            default:
+                Debug.LogError("Trying to swap current ActionMap to an ActionMap that is not currently implemented");
+                break;
+        }
     }
-
-    // Change current ActionMap to PlayerControls
-    public void EnablePlayerControls()
-    {
-        playerInputs.DialogueUI.Disable();
-        playerInputs.PlayerControls.Enable();
-        playerInputs.UI.Disable();
-    }
-
-    public void EnableUI()
-    {
-        playerInputs.DialogueUI.Disable();
-        playerInputs.PlayerControls.Disable();
-        playerInputs.UI.Enable();
-    }
-
 }
 
