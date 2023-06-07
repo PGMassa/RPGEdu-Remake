@@ -92,13 +92,16 @@ public class DialogueUI
 
     public void DisplayDialogueChoices(List<string> currentChoices)
     {
-        // after testing, correct the case where currentChoices.Count > dialogueChoiceButtons.Count
+        int choicesCount =
+            (currentChoices.Count > dialogueChoiceButtons.Count) ? 
+            dialogueChoiceButtons.Count : currentChoices.Count; // how many choice button to display
+
         if (currentChoices.Count > dialogueChoiceButtons.Count)
         {
             Debug.LogWarning("The dialogue is trying to display more options than the UI system currently support");
         }
 
-        for(int i = 0; i <= currentChoices.Count -1; i++)
+        for(int i = 0; i <= choicesCount -1; i++)
         {
             dialogueChoiceButtons[i].GetComponentInChildren<TMP_Text>().text = currentChoices[i];
             dialogueChoiceButtons[i].SetActive(true);

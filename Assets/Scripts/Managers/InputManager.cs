@@ -3,7 +3,7 @@ using UnityEngine;
 
 /* 
  * This singleton class is responsible for  enabling and disabling the InputSystem, as well as
- * changing ActionMaps(not yet implemented). It also stores the player inputs and make them available 
+ * changing ActionMaps. It also stores the player inputs and make them available 
  * for the other classes.
  */
 public class InputManager : MonoBehaviour

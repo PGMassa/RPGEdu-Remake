@@ -12,10 +12,8 @@ using UnityEngine;
 /*
  * TODO: 
  * Task1: Check the original game, and then change the choice buttons UI to try reproducing the original look as closely as possible
- *      
- * Task2: Threat the case where there are more choices than buttons
  * 
- * Task3: Add the actions of the UIDialogue actionmap to the UI actionmap an implement a better way to enable/disable the choices action
+ * Task2: Add the actions of the UIDialogue actionmap to the UI actionmap an implement a better way to enable/disable the choices action
  * 
  * Task3: Refactor the dialogue code so it used events instead of direct calls to methods
  * 
@@ -78,7 +76,7 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-    // This method is called by the OnClick event on the choice buttons
+    // This method is called by the OnClick event, on the choice buttons
     public void MakeChoice(int choiceIndex)
     {
         inkStoryWrapper.MakeChoice(choiceIndex);
