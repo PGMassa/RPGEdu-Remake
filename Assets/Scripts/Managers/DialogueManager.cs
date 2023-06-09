@@ -8,12 +8,6 @@ using UnityEngine;
  * This class also informs other classes about changes necessary to the UI, 
  * ActionMaps, etc. (change this to use to events later).
  */
-
-/*
- * TODO: 
- * Task1: Check the original game, and then change the choice buttons UI to try reproducing the original look as closely as possible 
- * Task2: Refactor the dialogue code so it used events instead of direct calls to methods
- */
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; } // This class is a singleton
@@ -43,7 +37,6 @@ public class DialogueManager : MonoBehaviour
         InputManager.Instance.OnNextLine += ContinueDialogue;
     }
 
-    // Set the wrapper to dialogue with a given npc
     public void StartDialogueWith(string npcName)
     {
         inkStoryWrapper.StartDialogueWith(npcName);
