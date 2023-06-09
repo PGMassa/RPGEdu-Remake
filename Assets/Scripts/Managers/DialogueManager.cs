@@ -39,6 +39,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogueWith(string npcName)
     {
+        Debug.Log("StartingDialogue With" + npcName);
         inkStoryWrapper.StartDialogueWith(npcName);
 
         // --> Remember to change it to Events later, after testing <--
@@ -52,7 +53,9 @@ public class DialogueManager : MonoBehaviour
     // It gets the new dialogue options/dialogue lines from the InkStoryWrapper and send them to the UI
     public void ContinueDialogue()
     {
-        if (inkStoryWrapper.canContinue)
+        bool canContinue = inkStoryWrapper.canContinue;
+
+        if (canContinue)
         {
             UIManager.Instance.UpdateDialogueText(inkStoryWrapper.ContinueDialogue());
         }
@@ -61,7 +64,7 @@ public class DialogueManager : MonoBehaviour
         {
             StartCoroutine(EnablePlayerChoices());
 
-        }else if (!inkStoryWrapper.canContinue) EndDialogue();
+        }else if (!canContinue) EndDialogue();
 
     }
 
