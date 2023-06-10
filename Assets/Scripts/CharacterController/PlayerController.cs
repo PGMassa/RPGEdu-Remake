@@ -1,8 +1,8 @@
+using System.Collections;
 using UnityEngine;
 
 /*
- * This class is responsible for managing every other class related to player controls.
- * The other player controller classes must not know or communicate with each other directly.
+ * This class is responsible for managing player-related classes
  */
 [RequireComponent(typeof(PlayerMovement), typeof(PlayerAnimation))]
 [RequireComponent(typeof(PlayerInteraction))]
@@ -13,27 +13,52 @@ public class PlayerController : MonoBehaviour
     private PlayerAnimation playerAnimation;
     private PlayerInteraction playerInteraction;
 
+    // Movement variables
+    private Vector2 directionalInput;
+    private bool isSprinting;
+
     private void Start()
     {
-        Cursor.visible = false; // here temporarily - move to a interface manager once it's implemented
+        directionalInput = Vector2.zero;
 
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
         playerInteraction = GetComponent<PlayerInteraction>();
+    }
 
+    private void OnEnable()
+    {
+        // Doing it on a coroutine to avoid "execution order" shenanigans
+        StartCoroutine(SubscribeCallbacks());
+    }
+
+    private IEnumerator SubscribeCallbacks()
+    {
+        // Subscribing Movement-related callbacks
+        yield return new WaitUntil(() => InputManager.Instance != null);
+
+        InputManager.Instance.OnDirectionInput += i => directionalInput = i;
+        InputManager.Instance.OnSprintingStarted += () => isSprinting = true;
+        InputManager.Instance.OnSprintingEnded += () => isSprinting = false;
+        InputManager.Instance.OnPlayerInteraction += Interact;
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribing Movement-related callbacks
+        InputManager.Instance.OnDirectionInput += i => directionalInput = i;
+        InputManager.Instance.OnSprintingStarted += () => isSprinting = true;
+        InputManager.Instance.OnSprintingEnded += () => isSprinting = false;
         InputManager.Instance.OnPlayerInteraction += Interact;
     }
 
     private void FixedUpdate()
     {
-        Vector2 directionalInput = InputManager.Instance.directionalInput;
-        bool isSprinting = InputManager.Instance.isSprinting;
-
         playerMovement.HandleMovement(directionalInput, isSprinting);
         playerAnimation.HandleWalkingAnimation(directionalInput, isSprinting);
     }
 
-    // This method is subscribed to an event on InputManager, and will be called when an InteractAction is performed by the player
+    // Callback function -> called when the Interact Action is performed.
     public void Interact()
     {
         playerInteraction.Interact();

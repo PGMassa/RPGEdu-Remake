@@ -23,12 +23,10 @@ public class InputManager : MonoBehaviour
 
     private PlayerInputs playerInputs; // reference to the InputSystem
 
-
-    // !!!THESE TWO SHOULD BE TURNED INTO EVENTS TOO!!!
-    public Vector2 directionalInput { get; private set; }
-    public bool isSprinting { get; private set; }
-
     // Player Controls Events
+    public event Action <Vector2> OnDirectionInput;
+    public event Action OnSprintingStarted;
+    public event Action OnSprintingEnded;
     public event Action OnPlayerInteraction;
 
     // Dialogue Events
@@ -58,9 +56,9 @@ public class InputManager : MonoBehaviour
          */
 
         // Subscribing to "PlayerControls" events
-        playerInputs.PlayerControls.DirectionalMovement.performed += i => directionalInput = i.ReadValue<Vector2>();
-        playerInputs.PlayerControls.Sprint.started += i => isSprinting = true;
-        playerInputs.PlayerControls.Sprint.canceled += i => isSprinting = false;
+        playerInputs.PlayerControls.DirectionalMovement.performed += i => OnDirectionInput?.Invoke(i.ReadValue<Vector2>());
+        playerInputs.PlayerControls.Sprint.started += i => OnSprintingStarted?.Invoke();
+        playerInputs.PlayerControls.Sprint.canceled += i => OnSprintingEnded?.Invoke();
         playerInputs.PlayerControls.Interact.performed += i => OnPlayerInteraction?.Invoke();
 
         // Subscribing to "UIDialogue" events
@@ -90,9 +88,9 @@ public class InputManager : MonoBehaviour
     {
         // Unubscribing to the InputSystem events
         // PlayerControls callbacks
-        playerInputs.PlayerControls.DirectionalMovement.performed -= i => directionalInput = i.ReadValue<Vector2>();
-        playerInputs.PlayerControls.Sprint.started -= i => isSprinting = true;
-        playerInputs.PlayerControls.Sprint.canceled -= i => isSprinting = false;
+        playerInputs.PlayerControls.DirectionalMovement.performed -= i => OnDirectionInput?.Invoke(i.ReadValue<Vector2>());
+        playerInputs.PlayerControls.Sprint.started -= i => OnSprintingStarted?.Invoke();
+        playerInputs.PlayerControls.Sprint.canceled -= i => OnSprintingEnded?.Invoke();
         playerInputs.PlayerControls.Interact.performed -= i => OnPlayerInteraction?.Invoke();
 
         // UIDialogue callbacks

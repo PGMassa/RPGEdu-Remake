@@ -45,7 +45,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator SubscribeCallbacks()
     {
-        // Subscribing to Input-related callbacks
+        // Subscribing Input-related callbacks
         yield return new WaitUntil(() => InputManager.Instance != null);
 
         InputManager.Instance.OnNextLine += ContinueDialogue;
