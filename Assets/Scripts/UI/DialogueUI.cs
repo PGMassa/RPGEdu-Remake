@@ -12,14 +12,14 @@ using TMPro;
  */
 public class DialogueUI
 {
-    private TMP_Text interactablePrompt; // text used to show that an object/character is interactable
+    private TMP_Text interactablePrompt; // Text used to show that an object/character is interactable
 
     private GameObject dialogueBox;
     private TMP_Text dialogueText;
 
-    private List<GameObject> dialogueChoiceButtons; // buttons where the dialogue choices will presented to the player
+    private List<GameObject> dialogueChoiceButtons;
 
-    private List<string> promptTextStack; //In case more than one interactable object is requesting a prompt
+    private List<string> promptTextStack; // In case more than one interactable object is requesting a prompt
 
     // Constructor
     public DialogueUI(TMP_Text interactablePrompt, GameObject dialogueBox, TMP_Text dialogueText, List<GameObject> dialogueChoiceButtons) 
@@ -77,11 +77,11 @@ public class DialogueUI
 
 
     //DialogueBox-related methods
-    public void StartDialogueUI(string firstLine = "")
+    public void StartDialogueUI()
     {
         interactablePrompt.gameObject.SetActive(false);
 
-        dialogueText.text = firstLine;
+        dialogueText.text = "";
         dialogueBox.SetActive(true);
     }
 
@@ -109,7 +109,7 @@ public class DialogueUI
             dialogueChoiceButtons[i].GetComponent<Button>().enabled = true;
         }
 
-        // need to do this manually, because the FirstSelected option on the event system only works for the first time you enter on dialogue
+        // Yes, we need to do this manually. The "FirstSelected" option on the event system only works for the first time you enter on dialogue
         EventSystem.current.SetSelectedGameObject(dialogueChoiceButtons[0]);
     }
 

@@ -20,7 +20,7 @@ public class InkStoryWrapper
     {
         this.inkAsset = inkAsset;
 
-        // We initialize the ink story only once because all the ink files will be compiled into only one JSON
+        // We initialize the ink story only once because all the ink files are compiled into only one JSON
         inkStory = new Story(inkAsset.text);
 
         // Catching error on the ink file

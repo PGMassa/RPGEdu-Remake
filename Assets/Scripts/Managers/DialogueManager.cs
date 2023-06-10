@@ -1,12 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /*
  * This class is responsible for controlling the flow of dialogue with an npc. 
  * This class does not interact with the Ink system directly, it only implements the dialogue logic.
- * 
- * This class also informs other classes about changes necessary to the UI, 
- * ActionMaps, etc. (change this to use to events later).
  */
 public class DialogueManager : MonoBehaviour
 {
@@ -16,6 +15,13 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextAsset inkAsset;
 
     private InkStoryWrapper inkStoryWrapper;
+
+    // Dialogue Events
+    public event Action OnDialogueStarted;
+    public event Action OnDialogueEnded;
+    public event Action <string> OnNextDialogueLine;
+    public event Action <List<string>>OnDialogueChoicesEnabled; // one frame after the dialogue reaches an choice
+    public event Action OnDialogueChoicesDisabled; // one frame after the player makes a choice
 
     private void Awake()
     {
@@ -27,37 +33,46 @@ public class DialogueManager : MonoBehaviour
         else
         {
             Instance = this;
-
             inkStoryWrapper = new InkStoryWrapper(inkAsset);
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        // Doing it on a coroutine to avoid "execution order" shenanigans
+        StartCoroutine(SubscribeCallbacks());
+    }
+
+    private IEnumerator SubscribeCallbacks()
+    {
+        // Subscribing to Input-related callbacks
+        yield return new WaitUntil(() => InputManager.Instance != null);
+
         InputManager.Instance.OnNextLine += ContinueDialogue;
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribing Input-related callbacks
+        InputManager.Instance.OnNextLine -= ContinueDialogue;
     }
 
     public void StartDialogueWith(string npcName)
     {
-        Debug.Log("StartingDialogue With" + npcName);
-        inkStoryWrapper.StartDialogueWith(npcName);
-
-        // --> Remember to change it to Events later, after testing <--
-        UIManager.Instance.StartDialogueUI();
-        InputManager.Instance.SwapActionMap(InputManager.ActionMap.DialogueUI);
+        inkStoryWrapper.StartDialogueWith(npcName); // Changing Knot
+        OnDialogueStarted?.Invoke();
 
         ContinueDialogue();
     }
 
-    // This method is called when the NextLine Action is performed. 
-    // It gets the new dialogue options/dialogue lines from the InkStoryWrapper and send them to the UI
+    // Callback function -> called when the NextLine Action is performed.
     public void ContinueDialogue()
     {
         bool canContinue = inkStoryWrapper.canContinue;
 
         if (canContinue)
         {
-            UIManager.Instance.UpdateDialogueText(inkStoryWrapper.ContinueDialogue());
+            OnNextDialogueLine?.Invoke(inkStoryWrapper.ContinueDialogue());
         }
 
         if(inkStoryWrapper.choicesCount > 0)
@@ -68,7 +83,7 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-    // This method is called by the OnClick event, on the choice buttons
+    // Callback function -> called by the OnClick event of the choice buttons
     public void MakeChoice(int choiceIndex)
     {
         inkStoryWrapper.MakeChoice(choiceIndex);
@@ -79,27 +94,19 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        // --> Remember to change it to Events later, after testing <--
-        UIManager.Instance.CloseDialogueUI();
-        InputManager.Instance.SwapActionMap(InputManager.ActionMap.PlayerControls);
+        OnDialogueEnded?.Invoke();
     }
 
     private IEnumerator EnablePlayerChoices()
     {
         yield return new WaitForEndOfFrame();
-
-        // --> Remember to change it to Events later, after testing <--
-        UIManager.Instance.DisplayDialogueChoices(inkStoryWrapper.GetCurrentChoices());
-        InputManager.Instance.SwapActionMap(InputManager.ActionMap.UI);
+        OnDialogueChoicesEnabled?.Invoke(inkStoryWrapper.GetCurrentChoices());
     }
 
     private IEnumerator DisablePlayerChoices()
     {
         yield return new WaitForEndOfFrame();
-
-        // --> Remember to change it to Events later, after testing <--
-        UIManager.Instance.HideDialogueChoices();
-        InputManager.Instance.SwapActionMap(InputManager.ActionMap.DialogueUI);
+        OnDialogueChoicesDisabled?.Invoke();
     }
 
 }

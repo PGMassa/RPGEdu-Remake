@@ -1,10 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 /*
- * This singleton class is responsible for managing other UI related classes, as well as communicating
- * with the rest of the game.
+ * This singleton class is responsible for managing other UI related classes.
  * This class does not control UI elements directly.
  */
 public class UIManager : MonoBehaviour
@@ -31,15 +31,38 @@ public class UIManager : MonoBehaviour
         else
         {
             Instance = this;
+            dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText, dialogueChoiceButtons);
         }
 
         Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.Confined;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText, dialogueChoiceButtons);
+        // Doing it on a coroutine to avoid "execution order" shenanigans
+        StartCoroutine(SubscribeCallbacks());
+    }
+
+    private IEnumerator SubscribeCallbacks()
+    {
+        // Subscribing Dialogue-related callbacks
+        yield return new WaitUntil(() => DialogueManager.Instance != null);
+
+        DialogueManager.Instance.OnDialogueStarted += dialogueUI.StartDialogueUI;
+        DialogueManager.Instance.OnDialogueEnded += dialogueUI.CloseDialogueUI;
+        DialogueManager.Instance.OnNextDialogueLine += i => dialogueUI.UpdateDialogueText(i);
+        DialogueManager.Instance.OnDialogueChoicesEnabled += i => dialogueUI.DisplayDialogueChoices(i);
+        DialogueManager.Instance.OnDialogueChoicesDisabled += dialogueUI.HideDialogueChoices;
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribing Dialogue-related callbacks
+        DialogueManager.Instance.OnDialogueStarted -= dialogueUI.StartDialogueUI;
+        DialogueManager.Instance.OnDialogueEnded -= dialogueUI.CloseDialogueUI;
+        DialogueManager.Instance.OnNextDialogueLine -= i => dialogueUI.UpdateDialogueText(i);
+        DialogueManager.Instance.OnDialogueChoicesEnabled -= i => dialogueUI.DisplayDialogueChoices(i);
+        DialogueManager.Instance.OnDialogueChoicesDisabled -= dialogueUI.HideDialogueChoices;
     }
 
 
@@ -52,33 +75,6 @@ public class UIManager : MonoBehaviour
     public void HideInterationPrompt(string interactableText)
     {
         dialogueUI.HideInteractionPrompt(interactableText);
-    }
-
-
-    // DialogueBox-related methods
-    public void StartDialogueUI(string firstLine = "")
-    {
-        dialogueUI.StartDialogueUI(firstLine);
-    }
-
-    public void UpdateDialogueText(string dialogueLine)
-    {
-        dialogueUI.UpdateDialogueText(dialogueLine);
-    }
-
-    public void DisplayDialogueChoices(List<string> currentChoices)
-    {
-        dialogueUI.DisplayDialogueChoices(currentChoices);
-    }
-
-    public void HideDialogueChoices()
-    {
-        dialogueUI.HideDialogueChoices();
-    }
-
-    public void CloseDialogueUI()
-    {
-        dialogueUI.CloseDialogueUI();
     }
 
 }
