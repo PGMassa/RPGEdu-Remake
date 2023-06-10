@@ -53,6 +53,12 @@ public class UIManager : MonoBehaviour
         DialogueManager.Instance.OnNextDialogueLine += i => dialogueUI.UpdateDialogueText(i);
         DialogueManager.Instance.OnDialogueChoicesEnabled += i => dialogueUI.DisplayDialogueChoices(i);
         DialogueManager.Instance.OnDialogueChoicesDisabled += dialogueUI.HideDialogueChoices;
+
+        // Subscribing Interactable-related callbakcs
+        yield return new WaitUntil(() => InteractablesManager.Instance != null);
+
+        InteractablesManager.Instance.OnDisplayInteractionPromptRequested += (applicant, message) => dialogueUI.ShowInteractionPrompt(message);
+        InteractablesManager.Instance.OnHideInteractionPromptRequested += (applicant, message) => dialogueUI.HideInteractionPrompt(message);
     }
 
     private void OnDisable()
@@ -63,18 +69,9 @@ public class UIManager : MonoBehaviour
         DialogueManager.Instance.OnNextDialogueLine -= i => dialogueUI.UpdateDialogueText(i);
         DialogueManager.Instance.OnDialogueChoicesEnabled -= i => dialogueUI.DisplayDialogueChoices(i);
         DialogueManager.Instance.OnDialogueChoicesDisabled -= dialogueUI.HideDialogueChoices;
+
+        // Unsubscribing Interactable-related callbakcs
+        InteractablesManager.Instance.OnDisplayInteractionPromptRequested -= (applicant, message) => dialogueUI.ShowInteractionPrompt(message);
+        InteractablesManager.Instance.OnHideInteractionPromptRequested -= (applicant, message) => dialogueUI.HideInteractionPrompt(message);
     }
-
-
-    // InteractionPrompt-related methods
-    public void ShowInteractionPrompt(string interatableText)
-    {
-        dialogueUI.ShowInteractionPrompt(interatableText);
-    }
-
-    public void HideInterationPrompt(string interactableText)
-    {
-        dialogueUI.HideInteractionPrompt(interactableText);
-    }
-
 }

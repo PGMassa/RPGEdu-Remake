@@ -47,17 +47,24 @@ public class DialogueManager : MonoBehaviour
     {
         // Subscribing Input-related callbacks
         yield return new WaitUntil(() => InputManager.Instance != null);
-
         InputManager.Instance.OnNextLine += ContinueDialogue;
+
+        // Subscribing Interactable-related callbacks
+        yield return new WaitUntil(() => InteractablesManager.Instance != null);
+        InteractablesManager.Instance.OnNPCDialogueRequested += (applicant, npcName) => StartDialogueWith(npcName);
+
     }
 
     private void OnDisable()
     {
         // Unsubscribing Input-related callbacks
         InputManager.Instance.OnNextLine -= ContinueDialogue;
+
+        // Subscribing Interactable-related callbacks
+        InteractablesManager.Instance.OnNPCDialogueRequested -= (applicant, npcName) => StartDialogueWith(npcName);
     }
 
-    public void StartDialogueWith(string npcName)
+    private void StartDialogueWith(string npcName)
     {
         inkStoryWrapper.StartDialogueWith(npcName); // Changing Knot
         OnDialogueStarted?.Invoke();

@@ -19,17 +19,17 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 
     void IInteractable.DisplayInteractionPrompt()
     {
-        UIManager.Instance.ShowInteractionPrompt(interactionPromptText);
+        InteractablesManager.Instance.DisplayInteractionPrompt(gameObject.name, interactionPromptText);
     }
 
     void IInteractable.HideInteractionPrompt()
     {
-        UIManager.Instance.HideInterationPrompt(interactionPromptText);
+        InteractablesManager.Instance.HideInteractionPrompt(gameObject.name, interactionPromptText);
     }
 
     void IInteractable.Interact()
     {
-        DialogueManager.Instance.StartDialogueWith(characterName);
+        InteractablesManager.Instance.TalkToNPC(gameObject.name, characterName);
     }
 
 }
