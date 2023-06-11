@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour
 
         InteractablesManager.Instance.OnDisplayInteractionPromptRequested += (applicant, message) => dialogueUI.ShowInteractionPrompt(message);
         InteractablesManager.Instance.OnHideInteractionPromptRequested += (applicant, message) => dialogueUI.HideInteractionPrompt(message);
+        InteractablesManager.Instance.OnNpcDialogueInterfaceChanged += (dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox); 
     }
 
     private void OnDisable()
@@ -73,5 +74,6 @@ public class UIManager : MonoBehaviour
         // Unsubscribing Interactable-related callbakcs
         InteractablesManager.Instance.OnDisplayInteractionPromptRequested -= (applicant, message) => dialogueUI.ShowInteractionPrompt(message);
         InteractablesManager.Instance.OnHideInteractionPromptRequested -= (applicant, message) => dialogueUI.HideInteractionPrompt(message);
+        InteractablesManager.Instance.OnNpcDialogueInterfaceChanged -= (dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox);
     }
 }

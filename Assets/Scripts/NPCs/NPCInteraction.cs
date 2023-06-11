@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * This class is responsible for the IInteractables npcs
@@ -9,6 +10,9 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 {
     [Header("NPC Info")]
     [SerializeField] private string characterName;
+
+    [Header("NPC Dialogue Interface")]
+    [SerializeField] private Sprite customNPCDialogueBox; // Later this will have to be changed, once we get new npcs.
 
     private string interactionPromptText;
 
@@ -29,7 +33,7 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 
     void IInteractable.Interact()
     {
-        InteractablesManager.Instance.TalkToNPC(gameObject.name, characterName);
+        InteractablesManager.Instance.TalkToNPC(gameObject.name, characterName, customNPCDialogueBox);
     }
 
 }

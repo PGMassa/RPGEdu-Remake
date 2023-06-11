@@ -1842,6 +1842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Bekin
+  customNPCDialogueBox: {fileID: 21300000, guid: d0e3311513cb62f4f91513bd5d2a1092, type: 3}
 --- !u!4 &319700864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 50a269daf776879428dc65903688b50c, type: 3}
@@ -4978,7 +4979,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1019452882}
-  m_LocalRotation: {x: 0.19655591, y: -0.3425305, z: 0.073518924, w: 0.91576946}
+  m_LocalRotation: {x: 0.1965559, y: -0.3425305, z: 0.07351893, w: 0.91576946}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7194,6 +7195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Merine
+  customNPCDialogueBox: {fileID: 21300000, guid: c289806ee3131b5418adf9c012a15a53, type: 3}
 --- !u!114 &1441187904
 MonoBehaviour:
   m_ObjectHideFlags: 0

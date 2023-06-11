@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * This class is responsible for managing IInteractable objects and characters.
@@ -14,7 +15,8 @@ public class InteractablesManager : MonoBehaviour
     public event Action<string, string> OnHideInteractionPromptRequested;
 
     // NPC-related events
-    public event Action<string, string> OnNPCDialogueRequested; // when the player talks to the npc
+    public event Action<string, string> OnNPCDialogueRequested;
+    public event Action<Sprite> OnNpcDialogueInterfaceChanged;
 
     private void Awake()
     {
@@ -42,8 +44,9 @@ public class InteractablesManager : MonoBehaviour
     }
 
     // Called directly by IInteractable NPC
-    public void TalkToNPC(string applicant, string characterName)
+    public void TalkToNPC(string applicant, string characterName, Sprite customNPCDialogueBox = null )
     {
+        if (customNPCDialogueBox != null) OnNpcDialogueInterfaceChanged?.Invoke(customNPCDialogueBox);
         OnNPCDialogueRequested?.Invoke(applicant, characterName);
     }
 }

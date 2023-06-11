@@ -90,6 +90,11 @@ public class DialogueUI
         dialogueText.text = dialogueLine;
     }
 
+    public void UpdateDialogueBoxInterface(Sprite dialogueBoxImage) 
+    {
+        dialogueBox.GetComponent<Image>().sprite = dialogueBoxImage;
+    }
+
     public void DisplayDialogueChoices(List<string> currentChoices)
     {
         int choicesCount =
