@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 directionalInput;
     private bool isSprinting;
 
+    // InputSystem-related variables
+    private bool isPlayerControlsEnabled;
+
     private void Start()
     {
         directionalInput = Vector2.zero;
@@ -41,6 +44,9 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnSprintingStarted += () => isSprinting = true;
         InputManager.Instance.OnSprintingEnded += () => isSprinting = false;
         InputManager.Instance.OnPlayerInteraction += Interact;
+
+        // Subscribing callback for changes to the enabled ActionMap
+        InputManager.Instance.OnActionMapChanged += (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
     }
 
     private void OnDisable()
@@ -50,6 +56,9 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnSprintingStarted += () => isSprinting = true;
         InputManager.Instance.OnSprintingEnded += () => isSprinting = false;
         InputManager.Instance.OnPlayerInteraction += Interact;
+
+        // Unubscribing callback for changes to the enabled ActionMap
+        InputManager.Instance.OnActionMapChanged -= (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
     }
 
     private void FixedUpdate()

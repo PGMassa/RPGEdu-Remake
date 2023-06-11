@@ -15,13 +15,17 @@ public class InputManager : MonoBehaviour
     {
         PlayerControls,
         DialogueUI,
-        UI
+        UI,
+        None
     };
 
     [Header("Parameters")]
     [SerializeField] private ActionMap defaultActionMap;
 
     private PlayerInputs playerInputs; // reference to the InputSystem
+
+    // ActionMap Events
+    public event Action<ActionMap, ActionMap> OnActionMapChanged; // Parameters: old ActionMap, new ActionMap
 
     // Player Controls Events
     public event Action <Vector2> OnDirectionInput;
@@ -31,6 +35,8 @@ public class InputManager : MonoBehaviour
 
     // Dialogue Events
     public event Action OnNextLine;
+
+    private ActionMap enabledActionMap;
 
     private void Awake()
     {
@@ -42,7 +48,9 @@ public class InputManager : MonoBehaviour
         else
         {
             Instance = this;
+
             playerInputs = new PlayerInputs();
+            enabledActionMap = ActionMap.None;
         }
     }
 
@@ -64,11 +72,22 @@ public class InputManager : MonoBehaviour
         // Subscribing to "UIDialogue" events
         playerInputs.DialogueUI.NextLine.performed += i => OnNextLine?.Invoke();
 
-        // Enable the default ActionMap
-        SwapActionMap(defaultActionMap);
+        // Enable the default ActionMap (after all the important Managers have been initialized)
+        //SwapActionMap(defaultActionMap);
+        StartCoroutine(EnableDefaultActionMap());
 
         // Doing it on a coroutine to avoid "execution order" shenanigans
         StartCoroutine(SubscribeCallbacks());
+    }
+
+    private IEnumerator EnableDefaultActionMap()
+    {
+        // Waiting until all the important Instances were initialized before enabling playerInput
+        yield return new WaitUntil(() => DialogueManager.Instance != null);
+        yield return new WaitUntil(() => UIManager.Instance != null);
+        yield return new WaitUntil(() => InteractablesManager.Instance != null);
+
+        SwapActionMap(defaultActionMap);
     }
 
     // Doing it on a coroutine to avoid "execution order" shenanigans
@@ -124,6 +143,10 @@ public class InputManager : MonoBehaviour
                 Debug.LogError("Trying to swap current ActionMap to an ActionMap that is not currently implemented");
                 break;
         }
+
+        Debug.Log("Enabled ActionMap: " + actionMap);
+        OnActionMapChanged?.Invoke(enabledActionMap, actionMap);
+        enabledActionMap = actionMap;
     }
 }
 
