@@ -24,18 +24,6 @@ public class InputManager : MonoBehaviour
 
     private PlayerInputs playerInputs; // reference to the InputSystem
 
-    // ActionMap Events
-    public event Action<ActionMap, ActionMap> OnActionMapChanged; // Parameters: old ActionMap, new ActionMap
-
-    // Player Controls Events
-    public event Action <Vector2> OnDirectionInput;
-    public event Action OnSprintingStarted;
-    public event Action OnSprintingEnded;
-    public event Action OnPlayerInteraction;
-
-    // Dialogue Events
-    public event Action OnNextLine;
-
     private ActionMap enabledActionMap;
 
     private void Awake()
@@ -56,22 +44,6 @@ public class InputManager : MonoBehaviour
 
     private void OnEnable()
     {
-        /*
-         * There is no need to put the InputSystem-related subscriptions inside a coroutine, since we are instantianted
-         * playerInput ourselves.
-         * 
-         * Subscriptions to other events, however, will be put inside the "SubscribeCallbacks" coroutine, as usual
-         */
-
-        // Subscribing to "PlayerControls" events
-        playerInputs.PlayerControls.DirectionalMovement.performed += i => OnDirectionInput?.Invoke(i.ReadValue<Vector2>());
-        playerInputs.PlayerControls.Sprint.started += i => OnSprintingStarted?.Invoke();
-        playerInputs.PlayerControls.Sprint.canceled += i => OnSprintingEnded?.Invoke();
-        playerInputs.PlayerControls.Interact.performed += i => OnPlayerInteraction?.Invoke();
-
-        // Subscribing to "UIDialogue" events
-        playerInputs.DialogueUI.NextLine.performed += i => OnNextLine?.Invoke();
-
         // Enable the default ActionMap (after all the important Managers have been initialized)
         //SwapActionMap(defaultActionMap);
         StartCoroutine(EnableDefaultActionMap());
@@ -82,6 +54,8 @@ public class InputManager : MonoBehaviour
 
     private IEnumerator EnableDefaultActionMap()
     {
+        // !!! Move this logic to the EventManager later !!!
+
         // Waiting until all the important Instances were initialized before enabling playerInput
         yield return new WaitUntil(() => DialogueManager.Instance != null);
         yield return new WaitUntil(() => UIManager.Instance != null);
@@ -93,7 +67,18 @@ public class InputManager : MonoBehaviour
     // Doing it on a coroutine to avoid "execution order" shenanigans
     private IEnumerator SubscribeCallbacks()
     {
-        // Subscribing callbacks related to the swapping of ActionMaps
+        yield return new WaitUntil(() => EventManager.Instance != null); // Only start subscribing to events after EventManager have been initialized
+        // Subscribing "PlayerControls" events
+        playerInputs.PlayerControls.DirectionalMovement.performed += i => EventManager.Instance.inputEvents.DirectionalInput(i.ReadValue<Vector2>());
+        playerInputs.PlayerControls.Sprint.started += i => EventManager.Instance.inputEvents.SprintingStarted();
+        playerInputs.PlayerControls.Sprint.canceled += i => EventManager.Instance.inputEvents.SprintingEnded();
+        playerInputs.PlayerControls.Interact.performed += i => EventManager.Instance.inputEvents.PlayerInteractionPerformed();
+
+        // Subscribing "UIDialogue" events
+        playerInputs.DialogueUI.NextLine.performed += i => EventManager.Instance.inputEvents.NextLine();
+
+        // !!! Later those events will also come from the EventManager !!!
+        // Subscribing ActionMap events
         yield return new WaitUntil(() => DialogueManager.Instance != null);
 
         DialogueManager.Instance.OnDialogueStarted += () => SwapActionMap(ActionMap.DialogueUI);
@@ -107,13 +92,13 @@ public class InputManager : MonoBehaviour
     {
         // Unubscribing to the InputSystem events
         // PlayerControls callbacks
-        playerInputs.PlayerControls.DirectionalMovement.performed -= i => OnDirectionInput?.Invoke(i.ReadValue<Vector2>());
-        playerInputs.PlayerControls.Sprint.started -= i => OnSprintingStarted?.Invoke();
-        playerInputs.PlayerControls.Sprint.canceled -= i => OnSprintingEnded?.Invoke();
-        playerInputs.PlayerControls.Interact.performed -= i => OnPlayerInteraction?.Invoke();
+        playerInputs.PlayerControls.DirectionalMovement.performed -= i => EventManager.Instance.inputEvents.DirectionalInput(i.ReadValue<Vector2>());
+        playerInputs.PlayerControls.Sprint.started -= i => EventManager.Instance.inputEvents.SprintingStarted();
+        playerInputs.PlayerControls.Sprint.canceled -= i => EventManager.Instance.inputEvents.SprintingEnded();
+        playerInputs.PlayerControls.Interact.performed -= i => EventManager.Instance.inputEvents.PlayerInteractionPerformed();
 
         // UIDialogue callbacks
-        playerInputs.DialogueUI.NextLine.performed -= i => OnNextLine?.Invoke();
+        playerInputs.DialogueUI.NextLine.performed -= i => EventManager.Instance.inputEvents.NextLine();
 
         // Unsubscribing callbakcs related to the swapping of ActionMaps
         DialogueManager.Instance.OnDialogueStarted -= () => SwapActionMap(ActionMap.DialogueUI);
@@ -145,7 +130,7 @@ public class InputManager : MonoBehaviour
         }
 
         Debug.Log("Enabled ActionMap: " + actionMap);
-        OnActionMapChanged?.Invoke(enabledActionMap, actionMap);
+        EventManager.Instance.inputEvents.ActionMapChanged(enabledActionMap, actionMap);
         enabledActionMap = actionMap;
     }
 }

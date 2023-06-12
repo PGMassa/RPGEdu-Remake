@@ -38,27 +38,27 @@ public class PlayerController : MonoBehaviour
     private IEnumerator SubscribeCallbacks()
     {
         // Subscribing Movement-related callbacks
-        yield return new WaitUntil(() => InputManager.Instance != null);
+        yield return new WaitUntil(() => EventManager.Instance != null);
 
-        InputManager.Instance.OnDirectionInput += i => directionalInput = i;
-        InputManager.Instance.OnSprintingStarted += () => isSprinting = true;
-        InputManager.Instance.OnSprintingEnded += () => isSprinting = false;
-        InputManager.Instance.OnPlayerInteraction += Interact;
+        EventManager.Instance.inputEvents.OnDirectionalInput += i => directionalInput = i;
+        EventManager.Instance.inputEvents.OnSprintingStarted += () => isSprinting = true;
+        EventManager.Instance.inputEvents.OnSprintingEnded += () => isSprinting = false;
+        EventManager.Instance.inputEvents.OnPlayerInteractionPerformed += Interact;
 
         // Subscribing callback for changes to the enabled ActionMap
-        InputManager.Instance.OnActionMapChanged += (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
+        EventManager.Instance.inputEvents.OnActionMapChanged += (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
     }
 
     private void OnDisable()
     {
         // Unsubscribing Movement-related callbacks
-        InputManager.Instance.OnDirectionInput += i => directionalInput = i;
-        InputManager.Instance.OnSprintingStarted += () => isSprinting = true;
-        InputManager.Instance.OnSprintingEnded += () => isSprinting = false;
-        InputManager.Instance.OnPlayerInteraction += Interact;
+        EventManager.Instance.inputEvents.OnDirectionalInput -= i => directionalInput = i;
+        EventManager.Instance.inputEvents.OnSprintingStarted -= () => isSprinting = true;
+        EventManager.Instance.inputEvents.OnSprintingEnded -= () => isSprinting = false;
+        EventManager.Instance.inputEvents.OnPlayerInteractionPerformed -= Interact;
 
         // Unubscribing callback for changes to the enabled ActionMap
-        InputManager.Instance.OnActionMapChanged -= (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
+        EventManager.Instance.inputEvents.OnActionMapChanged -= (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
     }
 
     private void FixedUpdate()

@@ -46,8 +46,8 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator SubscribeCallbacks()
     {
         // Subscribing Input-related callbacks
-        yield return new WaitUntil(() => InputManager.Instance != null);
-        InputManager.Instance.OnNextLine += ContinueDialogue;
+        yield return new WaitUntil(() => EventManager.Instance != null);
+        EventManager.Instance.inputEvents.OnNextLine += ContinueDialogue;
 
         // Subscribing Interactable-related callbacks
         yield return new WaitUntil(() => InteractablesManager.Instance != null);
@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
     private void OnDisable()
     {
         // Unsubscribing Input-related callbacks
-        InputManager.Instance.OnNextLine -= ContinueDialogue;
+        EventManager.Instance.inputEvents.OnNextLine -= ContinueDialogue;
 
         // Subscribing Interactable-related callbacks
         InteractablesManager.Instance.OnNPCDialogueRequested -= (applicant, npcName) => StartDialogueWith(npcName);
