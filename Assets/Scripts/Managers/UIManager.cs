@@ -48,11 +48,11 @@ public class UIManager : MonoBehaviour
         // Subscribing Dialogue-related callbacks
         yield return new WaitUntil(() => DialogueManager.Instance != null);
 
-        DialogueManager.Instance.OnDialogueStarted += dialogueUI.StartDialogueUI;
-        DialogueManager.Instance.OnDialogueEnded += dialogueUI.CloseDialogueUI;
-        DialogueManager.Instance.OnNextDialogueLine += i => dialogueUI.UpdateDialogueText(i);
-        DialogueManager.Instance.OnDialogueChoicesEnabled += i => dialogueUI.DisplayDialogueChoices(i);
-        DialogueManager.Instance.OnDialogueChoicesDisabled += dialogueUI.HideDialogueChoices;
+        EventManager.Instance.dialogueEvents.OnDialogueStarted += dialogueUI.StartDialogueUI;
+        EventManager.Instance.dialogueEvents.OnDialogueEnded += dialogueUI.CloseDialogueUI;
+        EventManager.Instance.dialogueEvents.OnNextDialogueLine += i => dialogueUI.UpdateDialogueText(i);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled += i => dialogueUI.DisplayDialogueChoices(i);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled += dialogueUI.HideDialogueChoices;
 
         // Subscribing Interactable-related callbakcs
         yield return new WaitUntil(() => InteractablesManager.Instance != null);
@@ -65,11 +65,11 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         // Unsubscribing Dialogue-related callbacks
-        DialogueManager.Instance.OnDialogueStarted -= dialogueUI.StartDialogueUI;
-        DialogueManager.Instance.OnDialogueEnded -= dialogueUI.CloseDialogueUI;
-        DialogueManager.Instance.OnNextDialogueLine -= i => dialogueUI.UpdateDialogueText(i);
-        DialogueManager.Instance.OnDialogueChoicesEnabled -= i => dialogueUI.DisplayDialogueChoices(i);
-        DialogueManager.Instance.OnDialogueChoicesDisabled -= dialogueUI.HideDialogueChoices;
+        EventManager.Instance.dialogueEvents.OnDialogueStarted -= dialogueUI.StartDialogueUI;
+        EventManager.Instance.dialogueEvents.OnDialogueEnded -= dialogueUI.CloseDialogueUI;
+        EventManager.Instance.dialogueEvents.OnNextDialogueLine -= i => dialogueUI.UpdateDialogueText(i);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled -= i => dialogueUI.DisplayDialogueChoices(i);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled -= dialogueUI.HideDialogueChoices;
 
         // Unsubscribing Interactable-related callbakcs
         InteractablesManager.Instance.OnDisplayInteractionPromptRequested -= (applicant, message) => dialogueUI.ShowInteractionPrompt(message);

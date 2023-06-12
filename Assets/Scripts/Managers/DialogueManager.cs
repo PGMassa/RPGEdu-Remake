@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -15,13 +13,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextAsset inkAsset;
 
     private InkStoryWrapper inkStoryWrapper;
-
-    // Dialogue Events
-    public event Action OnDialogueStarted;
-    public event Action OnDialogueEnded;
-    public event Action <string> OnNextDialogueLine;
-    public event Action <List<string>>OnDialogueChoicesEnabled; // one frame after the dialogue reaches an choice
-    public event Action OnDialogueChoicesDisabled; // one frame after the player makes a choice
 
     private void Awake()
     {
@@ -67,7 +58,7 @@ public class DialogueManager : MonoBehaviour
     private void StartDialogueWith(string npcName)
     {
         inkStoryWrapper.StartDialogueWith(npcName); // Changing Knot
-        OnDialogueStarted?.Invoke();
+        EventManager.Instance.dialogueEvents.DialogueStarted();
 
         ContinueDialogue();
     }
@@ -79,7 +70,7 @@ public class DialogueManager : MonoBehaviour
 
         if (canContinue)
         {
-            OnNextDialogueLine?.Invoke(inkStoryWrapper.ContinueDialogue());
+            EventManager.Instance.dialogueEvents.NextDialogueLine(inkStoryWrapper.ContinueDialogue());
         }
 
         if(inkStoryWrapper.choicesCount > 0)
@@ -101,19 +92,19 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        OnDialogueEnded?.Invoke();
+        EventManager.Instance.dialogueEvents.DialogueEnded();
     }
 
     private IEnumerator EnablePlayerChoices()
     {
         yield return new WaitForEndOfFrame();
-        OnDialogueChoicesEnabled?.Invoke(inkStoryWrapper.GetCurrentChoices());
+        EventManager.Instance.dialogueEvents.DialogueChoicesEnabled(inkStoryWrapper.GetCurrentChoices());
     }
 
     private IEnumerator DisablePlayerChoices()
     {
         yield return new WaitForEndOfFrame();
-        OnDialogueChoicesDisabled?.Invoke();
+        EventManager.Instance.dialogueEvents.DialogueChoicesDisabled();
     }
 
 }

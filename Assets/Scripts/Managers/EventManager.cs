@@ -9,6 +9,7 @@ public class EventManager : MonoBehaviour
 
     // Event classes <- These objects hold both the events themselves and the methods used to invoke them
     public InputEvents inputEvents { get; private set; }
+    public DialogueEvents dialogueEvents { get; private set; }
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class EventManager : MonoBehaviour
 
         // Initializing the Events classes
         inputEvents = new InputEvents();
+        dialogueEvents = new DialogueEvents();
     }
 
 }

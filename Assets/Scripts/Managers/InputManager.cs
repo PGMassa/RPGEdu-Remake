@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -77,34 +76,30 @@ public class InputManager : MonoBehaviour
         // Subscribing "UIDialogue" events
         playerInputs.DialogueUI.NextLine.performed += i => EventManager.Instance.inputEvents.NextLine();
 
-        // !!! Later those events will also come from the EventManager !!!
-        // Subscribing ActionMap events
-        yield return new WaitUntil(() => DialogueManager.Instance != null);
-
-        DialogueManager.Instance.OnDialogueStarted += () => SwapActionMap(ActionMap.DialogueUI);
-        DialogueManager.Instance.OnDialogueEnded += () => SwapActionMap(ActionMap.PlayerControls);
-        DialogueManager.Instance.OnDialogueChoicesEnabled += i => SwapActionMap(ActionMap.UI);
-        DialogueManager.Instance.OnDialogueChoicesDisabled += () => SwapActionMap(ActionMap.DialogueUI);
+        // Subscribing to ActionMap-changing events
+        EventManager.Instance.dialogueEvents.OnDialogueStarted += () => SwapActionMap(ActionMap.DialogueUI);
+        EventManager.Instance.dialogueEvents.OnDialogueEnded += () => SwapActionMap(ActionMap.PlayerControls);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled += i => SwapActionMap(ActionMap.UI);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled += () => SwapActionMap(ActionMap.DialogueUI);
 
     }
 
     private void OnDisable()
     {
-        // Unubscribing to the InputSystem events
-        // PlayerControls callbacks
+        // Unsubscribing "PlayerControls" events
         playerInputs.PlayerControls.DirectionalMovement.performed -= i => EventManager.Instance.inputEvents.DirectionalInput(i.ReadValue<Vector2>());
         playerInputs.PlayerControls.Sprint.started -= i => EventManager.Instance.inputEvents.SprintingStarted();
         playerInputs.PlayerControls.Sprint.canceled -= i => EventManager.Instance.inputEvents.SprintingEnded();
         playerInputs.PlayerControls.Interact.performed -= i => EventManager.Instance.inputEvents.PlayerInteractionPerformed();
 
-        // UIDialogue callbacks
+        // Unsubscribing "UIDialogue" events
         playerInputs.DialogueUI.NextLine.performed -= i => EventManager.Instance.inputEvents.NextLine();
 
-        // Unsubscribing callbakcs related to the swapping of ActionMaps
-        DialogueManager.Instance.OnDialogueStarted -= () => SwapActionMap(ActionMap.DialogueUI);
-        DialogueManager.Instance.OnDialogueEnded -= () => SwapActionMap(ActionMap.PlayerControls);
-        DialogueManager.Instance.OnDialogueChoicesEnabled -= i => SwapActionMap(ActionMap.UI);
-        DialogueManager.Instance.OnDialogueChoicesDisabled -= () => SwapActionMap(ActionMap.DialogueUI);
+        // Unsubscribing to ActionMap-changing events
+        EventManager.Instance.dialogueEvents.OnDialogueStarted -= () => SwapActionMap(ActionMap.DialogueUI);
+        EventManager.Instance.dialogueEvents.OnDialogueEnded -= () => SwapActionMap(ActionMap.PlayerControls);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled -= i => SwapActionMap(ActionMap.UI);
+        EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled -= () => SwapActionMap(ActionMap.DialogueUI);
 
 
         playerInputs.Disable(); // Disable all ActionMaps
