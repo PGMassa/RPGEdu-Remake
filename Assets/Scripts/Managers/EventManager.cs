@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /*
- * This class is the middle-man used for every communication between the difference systems in the game
+ * This class is the middle-man used for every communication between the different game systems
  */
 public class EventManager : MonoBehaviour
 {
@@ -10,6 +10,8 @@ public class EventManager : MonoBehaviour
     // Event classes <- These objects hold both the events themselves and the methods used to invoke them
     public InputEvents inputEvents { get; private set; }
     public DialogueEvents dialogueEvents { get; private set; }
+    public NPCEvents npcEvents { get; private set; }
+    public UIEvents uiEvents { get; set; }
 
     private void Awake()
     {
@@ -24,6 +26,8 @@ public class EventManager : MonoBehaviour
         // Initializing the Events classes
         inputEvents = new InputEvents();
         dialogueEvents = new DialogueEvents();
+        npcEvents = new NPCEvents();
+        uiEvents = new UIEvents();
     }
 
 }

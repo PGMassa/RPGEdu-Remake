@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 /*
- * This singleton class is responsible for managing other UI related classes.
+ * This class is responsible for managing other UI related classes.
  * This class does not control UI elements directly.
  */
 public class UIManager : MonoBehaviour
@@ -45,35 +45,37 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator SubscribeCallbacks()
     {
-        // Subscribing Dialogue-related callbacks
         yield return new WaitUntil(() => DialogueManager.Instance != null);
 
+        // Subscribing to dialogue events
         EventManager.Instance.dialogueEvents.OnDialogueStarted += dialogueUI.StartDialogueUI;
         EventManager.Instance.dialogueEvents.OnDialogueEnded += dialogueUI.CloseDialogueUI;
         EventManager.Instance.dialogueEvents.OnNextDialogueLine += i => dialogueUI.UpdateDialogueText(i);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled += i => dialogueUI.DisplayDialogueChoices(i);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled += dialogueUI.HideDialogueChoices;
 
-        // Subscribing Interactable-related callbakcs
-        yield return new WaitUntil(() => InteractablesManager.Instance != null);
+        // Subscribing to NPC events
+        EventManager.Instance.uiEvents.OnNPCInterfaceChangeRequest += (dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox);
 
-        InteractablesManager.Instance.OnDisplayInteractionPromptRequested += (applicant, message) => dialogueUI.ShowInteractionPrompt(message);
-        InteractablesManager.Instance.OnHideInteractionPromptRequested += (applicant, message) => dialogueUI.HideInteractionPrompt(message);
-        InteractablesManager.Instance.OnNpcDialogueInterfaceChanged += (dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox); 
+        // Subscribing to InteractionPrompt events
+        EventManager.Instance.uiEvents.OnDisplayInteractionPromptRequest += (requesterID, message) => dialogueUI.ShowInteractionPrompt(message);
+        EventManager.Instance.uiEvents.OnHideInteractionPromptRequest += (requesterID, message) => dialogueUI.HideInteractionPrompt(message); 
     }
 
     private void OnDisable()
     {
-        // Unsubscribing Dialogue-related callbacks
+        // Unsubscribing to dialogue events
         EventManager.Instance.dialogueEvents.OnDialogueStarted -= dialogueUI.StartDialogueUI;
         EventManager.Instance.dialogueEvents.OnDialogueEnded -= dialogueUI.CloseDialogueUI;
         EventManager.Instance.dialogueEvents.OnNextDialogueLine -= i => dialogueUI.UpdateDialogueText(i);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled -= i => dialogueUI.DisplayDialogueChoices(i);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled -= dialogueUI.HideDialogueChoices;
 
-        // Unsubscribing Interactable-related callbakcs
-        InteractablesManager.Instance.OnDisplayInteractionPromptRequested -= (applicant, message) => dialogueUI.ShowInteractionPrompt(message);
-        InteractablesManager.Instance.OnHideInteractionPromptRequested -= (applicant, message) => dialogueUI.HideInteractionPrompt(message);
-        InteractablesManager.Instance.OnNpcDialogueInterfaceChanged -= (dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox);
+        // Unsubscribing to NPC events
+        EventManager.Instance.uiEvents.OnNPCInterfaceChangeRequest += (dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox);
+
+        // Unsubscribing to InteractionPrompt events
+        EventManager.Instance.uiEvents.OnDisplayInteractionPromptRequest -= (requesterID, message) => dialogueUI.ShowInteractionPrompt(message);
+        EventManager.Instance.uiEvents.OnHideInteractionPromptRequest -= (requesterID, message) => dialogueUI.HideInteractionPrompt(message);
     }
 }

@@ -33,9 +33,9 @@ public class InkStoryWrapper
 
     // Goes to the knot where this npc dialogue starts.
     // It can be used to change to any knot, if necessary.
-    public void StartDialogueWith(string npcName)
+    public void StartDialogueWith(string npcID)
     {
-        inkStory.ChoosePathString(npcName); // The main knot of an npc dialogue must have the same name as the npc
+        inkStory.ChoosePathString(npcID); // The main knot of an npc dialogue must have the same name as the npcID
     }
 
     // Returns the next dialogue line

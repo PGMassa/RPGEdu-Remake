@@ -4,19 +4,10 @@ using UnityEngine.UI;
 
 /*
  * This class is responsible for managing IInteractable objects and characters.
- * Any class that wants to register to interactable-related events, must do it here.
  */
 public class InteractablesManager : MonoBehaviour
 {
     public static InteractablesManager Instance; // this class is a singleton
-
-    // "Interactablion prompts"-related events
-    public event Action<string, string> OnDisplayInteractionPromptRequested; //parameters: what object triggered the interaction, and the message they are passing
-    public event Action<string, string> OnHideInteractionPromptRequested;
-
-    // NPC-related events
-    public event Action<string, string> OnNPCDialogueRequested;
-    public event Action<Sprite> OnNpcDialogueInterfaceChanged;
 
     private void Awake()
     {
@@ -32,21 +23,21 @@ public class InteractablesManager : MonoBehaviour
     }
 
     // Called directly by IInteractable object or NPC
-    public void DisplayInteractionPrompt (string applicant, string interactionPromptText)
+    public void DisplayInteractionPrompt (string requesterID, string message)
     {
-        OnDisplayInteractionPromptRequested?.Invoke(applicant, interactionPromptText);
+        EventManager.Instance.uiEvents.DisplayInteractionPromptRequest(requesterID, message);
     }
 
     // Called directly by IInteractable object or NPC
-    public void HideInteractionPrompt(string applicant, string interactionPromptText)
+    public void HideInteractionPrompt(string requesterID, string message)
     {
-        OnHideInteractionPromptRequested?.Invoke(applicant, interactionPromptText);
+        EventManager.Instance.uiEvents.HideInteractionPromptRequest(requesterID, message);
     }
 
     // Called directly by IInteractable NPC
     public void TalkToNPC(string applicant, string characterName, Sprite customNPCDialogueBox = null )
     {
-        if (customNPCDialogueBox != null) OnNpcDialogueInterfaceChanged?.Invoke(customNPCDialogueBox);
-        OnNPCDialogueRequested?.Invoke(applicant, characterName);
+        if (customNPCDialogueBox != null) EventManager.Instance.uiEvents.NPCInterfaceChangeRequest(customNPCDialogueBox);
+        EventManager.Instance.npcEvents.RequestNPCDialogue(characterName);
     }
 }

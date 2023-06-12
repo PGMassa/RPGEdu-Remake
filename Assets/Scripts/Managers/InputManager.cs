@@ -2,9 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /* 
- * This singleton class is responsible for  enabling and disabling the InputSystem, as well as
- * changing ActionMaps. It also stores the player inputs and make them available 
- * for the other classes.
+ * This class is responsible for managing the Unity InputSystem
  */
 public class InputManager : MonoBehaviour
 {
@@ -44,7 +42,6 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         // Enable the default ActionMap (after all the important Managers have been initialized)
-        //SwapActionMap(defaultActionMap);
         StartCoroutine(EnableDefaultActionMap());
 
         // Doing it on a coroutine to avoid "execution order" shenanigans
@@ -66,14 +63,15 @@ public class InputManager : MonoBehaviour
     // Doing it on a coroutine to avoid "execution order" shenanigans
     private IEnumerator SubscribeCallbacks()
     {
-        yield return new WaitUntil(() => EventManager.Instance != null); // Only start subscribing to events after EventManager have been initialized
-        // Subscribing "PlayerControls" events
+        yield return new WaitUntil(() => EventManager.Instance != null);
+        
+        // Subscribing PlayerControls events
         playerInputs.PlayerControls.DirectionalMovement.performed += i => EventManager.Instance.inputEvents.DirectionalInput(i.ReadValue<Vector2>());
         playerInputs.PlayerControls.Sprint.started += i => EventManager.Instance.inputEvents.SprintingStarted();
         playerInputs.PlayerControls.Sprint.canceled += i => EventManager.Instance.inputEvents.SprintingEnded();
         playerInputs.PlayerControls.Interact.performed += i => EventManager.Instance.inputEvents.PlayerInteractionPerformed();
 
-        // Subscribing "UIDialogue" events
+        // Subscribing DialogueUI events
         playerInputs.DialogueUI.NextLine.performed += i => EventManager.Instance.inputEvents.NextLine();
 
         // Subscribing to ActionMap-changing events
@@ -86,13 +84,13 @@ public class InputManager : MonoBehaviour
 
     private void OnDisable()
     {
-        // Unsubscribing "PlayerControls" events
+        // Unsubscribing PlayerControls events
         playerInputs.PlayerControls.DirectionalMovement.performed -= i => EventManager.Instance.inputEvents.DirectionalInput(i.ReadValue<Vector2>());
         playerInputs.PlayerControls.Sprint.started -= i => EventManager.Instance.inputEvents.SprintingStarted();
         playerInputs.PlayerControls.Sprint.canceled -= i => EventManager.Instance.inputEvents.SprintingEnded();
         playerInputs.PlayerControls.Interact.performed -= i => EventManager.Instance.inputEvents.PlayerInteractionPerformed();
 
-        // Unsubscribing "UIDialogue" events
+        // Unsubscribing DialogueUI" events
         playerInputs.DialogueUI.NextLine.performed -= i => EventManager.Instance.inputEvents.NextLine();
 
         // Unsubscribing to ActionMap-changing events
