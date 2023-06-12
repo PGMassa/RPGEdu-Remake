@@ -55,7 +55,6 @@ public class InputManager : MonoBehaviour
         // Waiting until all the important Instances were initialized before enabling playerInput
         yield return new WaitUntil(() => DialogueManager.Instance != null);
         yield return new WaitUntil(() => UIManager.Instance != null);
-        yield return new WaitUntil(() => InteractablesManager.Instance != null);
 
         SwapActionMap(defaultActionMap);
     }

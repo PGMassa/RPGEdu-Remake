@@ -2,9 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
- * This class is responsible for the IInteractables npcs
- * It tells the UI when to show the Interaction Prompt and 
- * tells the DialogueManager when to start a dialogue
+ * Implementation of the IInteractable interface for NPCs
  */
 public class NPCInteraction : MonoBehaviour, IInteractable
 {
@@ -23,17 +21,20 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 
     void IInteractable.DisplayInteractionPrompt()
     {
-        InteractablesManager.Instance.DisplayInteractionPrompt(gameObject.name, interactionPromptText);
+        EventManager.Instance.uiEvents.DisplayInteractionPromptRequest(characterName, interactionPromptText);
     }
 
     void IInteractable.HideInteractionPrompt()
     {
-        InteractablesManager.Instance.HideInteractionPrompt(gameObject.name, interactionPromptText);
+        EventManager.Instance.uiEvents.HideInteractionPromptRequest(characterName, interactionPromptText);
     }
 
     void IInteractable.Interact()
     {
-        InteractablesManager.Instance.TalkToNPC(gameObject.name, characterName, customNPCDialogueBox);
+        if (customNPCDialogueBox == null) Debug.LogWarning("No customDialogueBox ascribed to the npc: " + characterName);
+        else EventManager.Instance.uiEvents.NPCInterfaceChangeRequest(customNPCDialogueBox);
+       
+        EventManager.Instance.npcEvents.RequestNPCDialogue(characterName);
     }
 
 }
