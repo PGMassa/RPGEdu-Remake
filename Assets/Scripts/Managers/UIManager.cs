@@ -9,7 +9,7 @@ using TMPro;
  */
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; } // This class is a singleton
+    //public static UIManager Instance { get; private set; } // This class is a singleton
 
     [Header("Dialogue System Components")]
     [SerializeField] private TMP_Text interactablePrompt; // Text used to show that an object/character can be interacted with
@@ -23,29 +23,20 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Debug.LogWarning("More than one UIManager component was found on this scene");
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText, dialogueChoiceButtons);
-        }
-
-        Cursor.visible = true;
+        dialogueUI = new DialogueUI(interactablePrompt, dialogueBox, dialogueText, dialogueChoiceButtons);
     }
 
     private void OnEnable()
     {
+        Cursor.visible = true; // !!! Once the UI is more fleshed out, the visibility of the cursor will be set to true only on when a menu or dialogue is being displayed !!!
+
         // Doing it on a coroutine to avoid "execution order" shenanigans
         StartCoroutine(SubscribeCallbacks());
     }
 
     private IEnumerator SubscribeCallbacks()
     {
-        yield return new WaitUntil(() => DialogueManager.Instance != null);
+        yield return new WaitUntil(() => EventManager.Instance != null);
 
         // Subscribing to dialogue events
         EventManager.Instance.dialogueEvents.OnDialogueStarted += dialogueUI.StartDialogueUI;
@@ -59,7 +50,10 @@ public class UIManager : MonoBehaviour
 
         // Subscribing to InteractionPrompt events
         EventManager.Instance.uiEvents.OnDisplayInteractionPromptRequest += (requesterID, message) => dialogueUI.ShowInteractionPrompt(message);
-        EventManager.Instance.uiEvents.OnHideInteractionPromptRequest += (requesterID, message) => dialogueUI.HideInteractionPrompt(message); 
+        EventManager.Instance.uiEvents.OnHideInteractionPromptRequest += (requesterID, message) => dialogueUI.HideInteractionPrompt(message);
+
+        // Notify EventManager that UIManager is listening
+        EventManager.Instance.internalEvents.ManagerStartedListening(gameObject.name);
     }
 
     private void OnDisable()
@@ -77,5 +71,8 @@ public class UIManager : MonoBehaviour
         // Unsubscribing to InteractionPrompt events
         EventManager.Instance.uiEvents.OnDisplayInteractionPromptRequest -= (requesterID, message) => dialogueUI.ShowInteractionPrompt(message);
         EventManager.Instance.uiEvents.OnHideInteractionPromptRequest -= (requesterID, message) => dialogueUI.HideInteractionPrompt(message);
+
+        // Notify EventManager that InputManager is not listening anymore
+        EventManager.Instance.internalEvents.ManagerStoppedListening(gameObject.name);
     }
 }

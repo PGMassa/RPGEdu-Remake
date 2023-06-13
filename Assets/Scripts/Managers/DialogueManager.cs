@@ -7,7 +7,7 @@ using UnityEngine;
  */
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance { get; private set; } // This class is a singleton
+    //public static DialogueManager Instance { get; private set; } // This class is a singleton
 
     [Header("Main Dialogue File")]
     [SerializeField] private TextAsset inkAsset;
@@ -16,16 +16,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance != null)
-        {
-            Debug.LogWarning("More than one DialogueManager component was found on this scene");
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            inkStoryWrapper = new InkStoryWrapper(inkAsset);
-        }
+        inkStoryWrapper = new InkStoryWrapper(inkAsset);
     }
 
     private void OnEnable()
@@ -44,6 +35,9 @@ public class DialogueManager : MonoBehaviour
         // Subscribing to NPC events
         EventManager.Instance.npcEvents.OnNPCDialogueRequested += (npcID) => StartDialogueWith(npcID);
 
+        // Notify EventManager that DialogueManager is listening
+        EventManager.Instance.internalEvents.ManagerStartedListening(gameObject.name);
+
     }
 
     private void OnDisable()
@@ -53,6 +47,9 @@ public class DialogueManager : MonoBehaviour
 
         // Unsubscribing to NPC events
         EventManager.Instance.npcEvents.OnNPCDialogueRequested -= (npcID) => StartDialogueWith(npcID);
+
+        // Notify EventManager that DialogueManager is not listening anymore
+        EventManager.Instance.internalEvents.ManagerStoppedListening(gameObject.name);
     }
 
     private void StartDialogueWith(string npcID)

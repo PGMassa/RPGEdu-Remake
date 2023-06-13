@@ -17,9 +17,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 directionalInput;
     private bool isSprinting;
 
-    // InputSystem-related variables
-    private bool isPlayerControlsEnabled;
-
     private void Start()
     {
         directionalInput = Vector2.zero;

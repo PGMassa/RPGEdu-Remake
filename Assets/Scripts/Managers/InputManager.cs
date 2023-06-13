@@ -6,7 +6,7 @@ using UnityEngine;
  */
 public class InputManager : MonoBehaviour
 {
-    public static InputManager Instance { get; private set; } //this class is a singleton
+    //public static InputManager Instance { get; private set; } //this class is a singleton
 
     public enum ActionMap //Used to swap ActionMap
     {
@@ -25,41 +25,16 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Debug.LogWarning("More than one InputManager component was found on this scene");
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-
-            playerInputs = new PlayerInputs();
-            enabledActionMap = ActionMap.None;
-        }
+        playerInputs = new PlayerInputs();
+        enabledActionMap = ActionMap.None;
     }
 
     private void OnEnable()
     {
-        // Enable the default ActionMap (after all the important Managers have been initialized)
-        StartCoroutine(EnableDefaultActionMap());
-
         // Doing it on a coroutine to avoid "execution order" shenanigans
         StartCoroutine(SubscribeCallbacks());
     }
 
-    private IEnumerator EnableDefaultActionMap()
-    {
-        // !!! Move this logic to the EventManager later !!!
-
-        // Waiting until all the important Instances were initialized before enabling playerInput
-        yield return new WaitUntil(() => DialogueManager.Instance != null);
-        yield return new WaitUntil(() => UIManager.Instance != null);
-
-        SwapActionMap(defaultActionMap);
-    }
-
-    // Doing it on a coroutine to avoid "execution order" shenanigans
     private IEnumerator SubscribeCallbacks()
     {
         yield return new WaitUntil(() => EventManager.Instance != null);
@@ -78,6 +53,12 @@ public class InputManager : MonoBehaviour
         EventManager.Instance.dialogueEvents.OnDialogueEnded += () => SwapActionMap(ActionMap.PlayerControls);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled += i => SwapActionMap(ActionMap.UI);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled += () => SwapActionMap(ActionMap.DialogueUI);
+
+        // Subscribe to get notified when all the managers are ready
+        EventManager.Instance.internalEvents.OnAllManagersReady += () => SwapActionMap(defaultActionMap);
+
+        // Notify EventManager that InputManager is listening
+        EventManager.Instance.internalEvents.ManagerStartedListening(gameObject.name);
 
     }
 
@@ -98,6 +79,11 @@ public class InputManager : MonoBehaviour
         EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled -= i => SwapActionMap(ActionMap.UI);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled -= () => SwapActionMap(ActionMap.DialogueUI);
 
+        // Unsubscribe to get notified when all the managers are ready
+        EventManager.Instance.internalEvents.OnAllManagersReady += () => SwapActionMap(defaultActionMap);
+
+        // Notify EventManager that InputManager is not listening anymore
+        EventManager.Instance.internalEvents.ManagerStoppedListening(gameObject.name);
 
         playerInputs.Disable(); // Disable all ActionMaps
     }
