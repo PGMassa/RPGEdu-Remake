@@ -6,6 +6,7 @@ public class InputEvents
     // Event declarations
     // ActionMap events
     public event Action<InputManager.ActionMap, InputManager.ActionMap> OnActionMapChanged; // Parameters: old ActionMap, new ActionMap
+    public event Action<InputManager.ActionMap> OnChangeActionMapRequest; // Parameter: new ActionMap
 
     // Player Controls events
     public event Action<Vector2> OnDirectionalInput;
@@ -20,6 +21,7 @@ public class InputEvents
     // Raising events
     // ActionMap events
     public void ActionMapChanged(InputManager.ActionMap oldActionMap, InputManager.ActionMap newActionMap) => OnActionMapChanged?.Invoke(oldActionMap, newActionMap);
+    public void RequestActionMapChange(InputManager.ActionMap newActionMap) => OnChangeActionMapRequest?.Invoke(newActionMap);
 
     // Player Controls events
     public void DirectionalInput(Vector2 directionalInput) => OnDirectionalInput?.Invoke(directionalInput);

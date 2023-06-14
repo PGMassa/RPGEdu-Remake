@@ -28,7 +28,10 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
+        // Preparing UI for the new scene
         Cursor.visible = true; // !!! Once the UI is more fleshed out, the visibility of the cursor will be set to true only on when a menu or dialogue is being displayed !!!
+
+        //dialogueUI.CleanDialogueUI();
 
         // Doing it on a coroutine to avoid "execution order" shenanigans
         StartCoroutine(SubscribeCallbacks());

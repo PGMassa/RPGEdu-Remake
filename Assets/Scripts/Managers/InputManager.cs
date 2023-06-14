@@ -49,8 +49,14 @@ public class InputManager : MonoBehaviour
         playerInputs.DialogueUI.NextLine.performed += i => EventManager.Instance.inputEvents.NextLine();
 
         // Subscribing to ActionMap-changing events
+        EventManager.Instance.inputEvents.OnChangeActionMapRequest += (newActionMap) => SwapActionMap(newActionMap);
+
+        EventManager.Instance.playerEvents.OnPlayerControllerEnabled += (playerActionMap) => SwapActionMap(playerActionMap);
+        EventManager.Instance.playerEvents.OnPlayerControllerDisabled += () => SwapActionMap(defaultActionMap);
+
         EventManager.Instance.dialogueEvents.OnDialogueStarted += () => SwapActionMap(ActionMap.DialogueUI);
         EventManager.Instance.dialogueEvents.OnDialogueEnded += () => SwapActionMap(ActionMap.PlayerControls);
+
         EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled += i => SwapActionMap(ActionMap.UI);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled += () => SwapActionMap(ActionMap.DialogueUI);
 
@@ -74,8 +80,14 @@ public class InputManager : MonoBehaviour
         playerInputs.DialogueUI.NextLine.performed -= i => EventManager.Instance.inputEvents.NextLine();
 
         // Unsubscribing to ActionMap-changing events
+        EventManager.Instance.inputEvents.OnChangeActionMapRequest -= (newActionMap) => SwapActionMap(newActionMap);
+
+        EventManager.Instance.playerEvents.OnPlayerControllerEnabled -= (playerActionMap) => SwapActionMap(playerActionMap);
+        EventManager.Instance.playerEvents.OnPlayerControllerDisabled -= () => SwapActionMap(defaultActionMap);
+
         EventManager.Instance.dialogueEvents.OnDialogueStarted -= () => SwapActionMap(ActionMap.DialogueUI);
         EventManager.Instance.dialogueEvents.OnDialogueEnded -= () => SwapActionMap(ActionMap.PlayerControls);
+
         EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled -= i => SwapActionMap(ActionMap.UI);
         EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled -= () => SwapActionMap(ActionMap.DialogueUI);
 

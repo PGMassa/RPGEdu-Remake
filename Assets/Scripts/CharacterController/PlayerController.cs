@@ -8,6 +8,9 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInteraction))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Player Input Controls")]
+    [SerializeField] InputManager.ActionMap playerActionMap;
+
     // Other player controller classes
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
@@ -44,6 +47,9 @@ public class PlayerController : MonoBehaviour
 
         // Subscribing callback for changes to the enabled ActionMap
         EventManager.Instance.inputEvents.OnActionMapChanged += (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
+
+        // Broadcast that this player controller is enabled
+        EventManager.Instance.playerEvents.PlayerControllerEnabled(playerActionMap);
     }
 
     private void OnDisable()
@@ -56,6 +62,9 @@ public class PlayerController : MonoBehaviour
 
         // Unubscribing callback for changes to the enabled ActionMap
         EventManager.Instance.inputEvents.OnActionMapChanged -= (oldActionMap, newActionMap) => directionalInput = Vector2.zero;
+
+        // Broadcast that this player controller is disabled
+        EventManager.Instance.playerEvents.PlayerControllerDisabled();
     }
 
     private void FixedUpdate()

@@ -18,6 +18,7 @@ public class EventManager : MonoBehaviour
 
     // Event classes <- These objects hold both the events themselves and the methods used to invoke them
     public InternalEvents internalEvents { get; private set; } // events related to the EventManager itself
+    public PlayerEvents playerEvents { get; private set; }
     public InputEvents inputEvents { get; private set; }
     public DialogueEvents dialogueEvents { get; private set; }
     public NPCEvents npcEvents { get; private set; }
@@ -34,6 +35,7 @@ public class EventManager : MonoBehaviour
 
         // Initializing the Events classes
         internalEvents = new InternalEvents();
+        playerEvents = new PlayerEvents();
         inputEvents = new InputEvents();
         dialogueEvents = new DialogueEvents();
         npcEvents = new NPCEvents();
