@@ -9,8 +9,6 @@ using TMPro;
  */
 public class UIManager : MonoBehaviour
 {
-    //public static UIManager Instance { get; private set; } // This class is a singleton
-
     [Header("Dialogue System Components")]
     [SerializeField] private TMP_Text interactablePrompt; // Text used to show that an object/character can be interacted with
 
@@ -28,10 +26,7 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // Preparing UI for the new scene
-        Cursor.visible = true; // !!! Once the UI is more fleshed out, the visibility of the cursor will be set to true only on when a menu or dialogue is being displayed !!!
-
-        //dialogueUI.CleanDialogueUI();
+        Cursor.visible = true;
 
         // Doing it on a coroutine to avoid "execution order" shenanigans
         StartCoroutine(SubscribeCallbacks());
