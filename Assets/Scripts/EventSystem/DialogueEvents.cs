@@ -16,4 +16,8 @@ public class DialogueEvents
     public void NextDialogueLine(string nextLine) => OnNextDialogueLine?.Invoke(nextLine);
     public void DialogueChoicesEnabled(List<string> choices) => OnDialogueChoicesEnabled(choices);
     public void DialogueChoicesDisabled() => OnDialogueChoicesDisabled?.Invoke();
+
 }
+
+
+

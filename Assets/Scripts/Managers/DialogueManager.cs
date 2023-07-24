@@ -67,6 +67,7 @@ public class DialogueManager : MonoBehaviour
 
         if (canContinue)
         {
+            Debug.Log("Sistema de dialogos invocou a ação NextDialogueLine");
             EventManager.Instance.dialogueEvents.NextDialogueLine(inkStoryWrapper.ContinueDialogue());
         }
 

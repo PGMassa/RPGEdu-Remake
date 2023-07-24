@@ -12,24 +12,20 @@ using TMPro;
  */
 public class DialogueUI
 {
-    private TMP_Text interactablePrompt; // Text used to show that an object/character is interactable
+    private Canvas dialogueCanvas;
 
     private GameObject dialogueBox;
     private TMP_Text dialogueText;
 
     private List<GameObject> dialogueChoiceButtons;
 
-    private List<string> promptTextStack; // In case more than one interactable object is requesting a prompt
-
     // Constructor
-    public DialogueUI(TMP_Text interactablePrompt, GameObject dialogueBox, TMP_Text dialogueText, List<GameObject> dialogueChoiceButtons) 
+    public DialogueUI(Canvas dialogueCanvas, GameObject dialogueBox, TMP_Text dialogueText, List<GameObject> dialogueChoiceButtons) 
     {
-        this.interactablePrompt = interactablePrompt;
+        this.dialogueCanvas = dialogueCanvas;
         this.dialogueBox = dialogueBox;
         this.dialogueText = dialogueText;
         this.dialogueChoiceButtons = dialogueChoiceButtons;
-
-        promptTextStack = new List<string>();
 
         CleanDialogueUI();
     }
@@ -37,49 +33,15 @@ public class DialogueUI
     // Sets dialogue UI to a clean state
     public void CleanDialogueUI()
     {
-        interactablePrompt.text = "";
-        interactablePrompt.gameObject.SetActive(true); // It should always be true, unless the dialogueBox is active
-
         dialogueText.text = "";
         HideDialogueChoices();
         dialogueBox.SetActive(false);
     }
 
-    //InteractionPrompt-related methods
-    public void ShowInteractionPrompt(string promptText)
-    {
-        // If some other object is already using the interaction prompt, store the old object's message
-        // so we can recover it after the new object is done using the prompt
-        if(!interactablePrompt.text.Equals("")) promptTextStack.Add(interactablePrompt.text);
-
-        interactablePrompt.text = promptText;
-    }
-
-    public void HideInteractionPrompt(string promptText)
-    {
-        if (promptText.Equals(interactablePrompt.text)) 
-        {
-            // If the message to hide is the one currently being displayed, we need to get another message to replace it
-            if (promptTextStack.Count == 0) interactablePrompt.text = "";
-            else
-            {
-                interactablePrompt.text = promptTextStack.Last();
-                promptTextStack.RemoveAt(promptTextStack.Count - 1);
-            }
-            
-        }
-        else
-        {
-            // If the message to hide is not currently being displayed, then we only need to take it out of the "stack"
-            promptTextStack.Remove(promptText);
-        }
-    }
-
-
     //DialogueBox-related methods
     public void StartDialogueUI()
     {
-        interactablePrompt.gameObject.SetActive(false);
+        dialogueCanvas.gameObject.SetActive(true);
 
         dialogueText.text = "";
         dialogueBox.SetActive(true);
@@ -131,7 +93,8 @@ public class DialogueUI
 
     public void CloseDialogueUI() 
     {
-        interactablePrompt.gameObject.SetActive(true);
+        dialogueCanvas.gameObject.SetActive(false);
+        //interactablePrompt.gameObject.SetActive(true);
 
         dialogueText.text = "";
         dialogueBox.SetActive(false);
