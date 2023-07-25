@@ -13,6 +13,7 @@ public class InputEvents
     public event Action OnSprintingStarted;
     public event Action OnSprintingEnded;
     public event Action OnPlayerInteractionPerformed;
+    public event Action OnPausePerformed;
 
     // Dialogue Events
     public event Action OnNextLine;
@@ -28,6 +29,7 @@ public class InputEvents
     public void SprintingStarted() => OnSprintingStarted?.Invoke();
     public void SprintingEnded() => OnSprintingEnded?.Invoke();
     public void PlayerInteractionPerformed() => OnPlayerInteractionPerformed?.Invoke();
+    public void PausePerformed() => OnPausePerformed?.Invoke();
 
     // Dialogue Events
     public void NextLine() => OnNextLine?.Invoke();

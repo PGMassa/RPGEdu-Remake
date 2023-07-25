@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 /*
  * This class is responsible for managing other UI related classes.
@@ -10,7 +11,7 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [Header("Pause Menu Components")]
-    [SerializeField] private Canvas PauseMenuCanvas;
+    [SerializeField] private Canvas pauseMenuCanvas;
 
     [Header("HUD Components")]
     [SerializeField] private Canvas hudCanvas;
@@ -26,17 +27,11 @@ public class UIManager : MonoBehaviour
 
     private DialogueUI dialogueUI;
     private HUDUI hudUI;
-
-    private void Awake()
-    {
-        dialogueUI = new DialogueUI(dialogueCanvas, dialogueBox, dialogueText, dialogueChoiceButtons);
-        hudUI = new HUDUI(hudCanvas, interactablePrompt);
-    }
+    private PauseUI pauseUI;
 
     private void OnEnable()
     {
         Cursor.visible = true;
-        hudUI.StartHUDUI();
 
         // Doing it on a coroutine to avoid "execution order" shenanigans
         StartCoroutine(SubscribeCallbacks());
@@ -45,6 +40,8 @@ public class UIManager : MonoBehaviour
     private IEnumerator SubscribeCallbacks()
     {
         yield return new WaitUntil(() => EventManager.Instance != null);
+
+        EventManager.Instance.inputEvents.OnPausePerformed += HandlePause;
 
         // Subscribing to dialogue events
         EventManager.Instance.dialogueEvents.OnDialogueStarted += StartDialogueUI;
@@ -62,9 +59,16 @@ public class UIManager : MonoBehaviour
 
         // Notify EventManager that UIManager is listening
         EventManager.Instance.internalEvents.ManagerStartedListening(gameObject.name);
+
+        // Initialize canvas controllers
+        dialogueUI = new DialogueUI(dialogueCanvas, dialogueBox, dialogueText, dialogueChoiceButtons);
+        hudUI = new HUDUI(hudCanvas, interactablePrompt);
+        pauseUI = new PauseUI(pauseMenuCanvas);
+
+        hudUI.StartHUDUI();
     }
 
-    // Callback methods - Using explicit methods intead of anonymous methods for better readibility
+    // Callback methods from the eventManager
     public void StartDialogueUI()
     {
         dialogueUI.StartDialogueUI();
@@ -77,24 +81,20 @@ public class UIManager : MonoBehaviour
         hudUI.StartHUDUI();
     }
 
-    public void UpdateDialogueText(string nextLine)
-    {
-        dialogueUI.UpdateDialogueText(nextLine);
-    }
+    public void UpdateDialogueText(string nextLine) => dialogueUI.UpdateDialogueText(nextLine);
+    public void DisplayDialogueChoices(List<string> options) => dialogueUI.DisplayDialogueChoices(options);
+    public void HideDialogueChoices() => dialogueUI.HideDialogueChoices();
+    public void UpdateDialogueBoxInterface(Sprite dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox);
+    public void HandlePause() => pauseUI.TogglePauseCanvas(); // Later:  Verify wich canvas in currently enabled and set pause menu based on that
 
-    public void DisplayDialogueChoices(List<string> options)
-    {
-        dialogueUI.DisplayDialogueChoices(options);
-    }
-
-    public void HideDialogueChoices()
-    {
-        dialogueUI.HideDialogueChoices();
-    }
-
-    public void UpdateDialogueBoxInterface(Sprite dialogueBox)
-    {
-        dialogueUI.UpdateDialogueBoxInterface(dialogueBox);
-    }
+    // Callback methods from buttons
+    public void OnReturnToGame() => pauseUI.OnReturnToGame();
+    public void OnSave() => pauseUI.OnSave();
+    public void OnOpenInventory() => pauseUI.OnOpenInventory();
+    public void OnOpenQuests() => pauseUI.OnOpenQuests();
+    public void OnOpenStates() => pauseUI.OnOpenStates();
+    public void OnOpenMap() => pauseUI.OnOpenMap();
+    public void OnOpenOptions() => pauseUI.OnOpenOptions();
+    public void OnExit() => pauseUI.OnExit();
 
 }

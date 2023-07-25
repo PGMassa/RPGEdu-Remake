@@ -48,7 +48,6 @@ public class HUDUI
 
     public void ShowInteractionPrompt(string promptText)
     {
-        Debug.Log("SHOW INTERACTION PROMPT");
         interactablePrompt.gameObject.SetActive(true);
         // If some other object is already using the interaction prompt, store the old object's message
         // so we can recover it after the new object is done using the prompt
