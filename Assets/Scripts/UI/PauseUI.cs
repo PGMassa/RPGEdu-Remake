@@ -1,26 +1,30 @@
 using UnityEngine;
 
-public class PauseUI
+public class PauseUI : ICanvasController
 {
     private Canvas pauseCanvas;
+
+    public GameObject canvasObject => pauseCanvas.gameObject;
 
     public PauseUI(Canvas pauseCanvas)
     {
         this.pauseCanvas = pauseCanvas;
     }
 
-    public void TogglePauseCanvas()
+    void ICanvasController.StartCanvas()
     {
-        pauseCanvas.gameObject.SetActive(!pauseCanvas.gameObject.activeSelf);
+        canvasObject.SetActive(true);
+    }
 
-        if (pauseCanvas.gameObject.activeSelf) EventManager.Instance.uiEvents.PauseMenuOpened();
-        else EventManager.Instance.uiEvents.PauseMenuClosed();
+    void ICanvasController.CloseCanvas()
+    {
+        canvasObject.SetActive(false);
     }
 
     // Callbacks from the UI buttons
     public void OnReturnToGame()
     {
-        Debug.Log("return to game not implemented yet");
+        EventManager.Instance.inputEvents.PausePerformed();
     }
 
     public void OnSave()
@@ -48,13 +52,13 @@ public class PauseUI
         Debug.Log("Map UI not implemented yet");
     }
 
-    public void OnOpenOptions()
+    /*public void OnOpenOptions()
     {
         Debug.Log("Options UI not implemented yet");
-    }
+    }*/
 
-    public void OnExit()
+    public void OnExitToMenu()
     {
-        Debug.Log("Main Menu not implemented yet");
+        EventManager.Instance.sceneEvents.UnloadGameSceneRequested();
     }
 }

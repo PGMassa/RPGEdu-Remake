@@ -10,7 +10,7 @@ using TMPro;
  * It decides which UI components to keep on the screen at each moment, and updates the value
  * of the text components associated with them.
  */
-public class DialogueUI
+public class DialogueUI : ICanvasController
 {
     private Canvas dialogueCanvas;
 
@@ -18,6 +18,8 @@ public class DialogueUI
     private TMP_Text dialogueText;
 
     private List<GameObject> dialogueChoiceButtons;
+
+    public GameObject canvasObject => dialogueCanvas.gameObject;
 
     // Constructor
     public DialogueUI(Canvas dialogueCanvas, GameObject dialogueBox, TMP_Text dialogueText, List<GameObject> dialogueChoiceButtons) 
@@ -30,6 +32,23 @@ public class DialogueUI
         CleanDialogueUI();
     }
 
+    void ICanvasController.StartCanvas()
+    {
+        canvasObject.SetActive(true);
+
+        dialogueText.text = "";
+        dialogueBox.SetActive(true);
+    }
+
+    void ICanvasController.CloseCanvas()
+    {
+        canvasObject.SetActive(false);
+        //interactablePrompt.gameObject.SetActive(true);
+
+        dialogueText.text = "";
+        dialogueBox.SetActive(false);
+    }
+
     // Sets dialogue UI to a clean state
     public void CleanDialogueUI()
     {
@@ -39,14 +58,6 @@ public class DialogueUI
     }
 
     //DialogueBox-related methods
-    public void StartDialogueUI()
-    {
-        dialogueCanvas.gameObject.SetActive(true);
-
-        dialogueText.text = "";
-        dialogueBox.SetActive(true);
-    }
-
     public void UpdateDialogueText(string dialogueLine)
     {
         dialogueText.text = dialogueLine;
@@ -90,14 +101,4 @@ public class DialogueUI
             choiceButton.gameObject.SetActive(false);
         }
     }
-
-    public void CloseDialogueUI() 
-    {
-        dialogueCanvas.gameObject.SetActive(false);
-        //interactablePrompt.gameObject.SetActive(true);
-
-        dialogueText.text = "";
-        dialogueBox.SetActive(false);
-    }
-
 }

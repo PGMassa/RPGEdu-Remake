@@ -10,12 +10,14 @@ using UnityEngine;
  * of the text components associated with them.
  */
 
-public class HUDUI
+public class HUDUI : ICanvasController
 {
     private Canvas hudCanvas;
     private TMP_Text interactablePrompt; // Text used to show that an object/character is interactable
 
     private List<string> promptTextStack; // In case more than one interactable object is requesting a prompt
+
+    public GameObject canvasObject => hudCanvas.gameObject;
 
     public HUDUI (Canvas hudCanvas, TMP_Text interactablePrompt)
     {
@@ -27,15 +29,15 @@ public class HUDUI
         CleanHUDUI();
     }
 
-    public void StartHUDUI()
+    void ICanvasController.StartCanvas()
     {
-        hudCanvas.gameObject.SetActive(true);
+        canvasObject.SetActive(true);
         interactablePrompt.gameObject.SetActive(true);
     }
 
-    public void CloseHUDUI()
+    void ICanvasController.CloseCanvas()
     {
-        hudCanvas.gameObject.SetActive(false);
+        canvasObject.SetActive(false);
         interactablePrompt.gameObject.SetActive(false);
     }
 

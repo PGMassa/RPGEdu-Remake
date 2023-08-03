@@ -2,7 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System;
+
+public interface ICanvasController
+{
+    void StartCanvas();
+    void CloseCanvas();
+
+    GameObject canvasObject { get; }
+}
 
 /*
  * This class is responsible for managing other UI related classes.
@@ -10,6 +17,9 @@ using System;
  */
 public class UIManager : MonoBehaviour
 {
+    [Header("Main Menu Components")]
+    [SerializeField] private Canvas mainMenuCanvas;
+
     [Header("Pause Menu Components")]
     [SerializeField] private Canvas pauseMenuCanvas;
 
@@ -28,10 +38,23 @@ public class UIManager : MonoBehaviour
     private DialogueUI dialogueUI;
     private HUDUI hudUI;
     private PauseUI pauseUI;
+    private MainMenuUI mainMenuUI;
+
+    private ICanvasController activeCanvas;
 
     private void OnEnable()
     {
         Cursor.visible = true;
+
+        // Initializing canvas controllers
+        dialogueUI = new DialogueUI(dialogueCanvas, dialogueBox, dialogueText, dialogueChoiceButtons);
+        hudUI = new HUDUI(hudCanvas, interactablePrompt);
+        pauseUI = new PauseUI(pauseMenuCanvas);
+        mainMenuUI = new MainMenuUI(mainMenuCanvas);
+
+        // Showing the mainMenu Canvas
+        (mainMenuUI as ICanvasController).StartCanvas();
+        activeCanvas = (mainMenuUI as ICanvasController);
 
         // Doing it on a coroutine to avoid "execution order" shenanigans
         StartCoroutine(SubscribeCallbacks());
@@ -44,8 +67,8 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.inputEvents.OnPausePerformed += HandlePause;
 
         // Subscribing to dialogue events
-        EventManager.Instance.dialogueEvents.OnDialogueStarted += StartDialogueUI;
-        EventManager.Instance.dialogueEvents.OnDialogueEnded += CloseDialogueUI;
+        EventManager.Instance.dialogueEvents.OnDialogueStarted += () => ChangeActiveCanvas(dialogueUI as ICanvasController);
+        EventManager.Instance.dialogueEvents.OnDialogueEnded += () => ChangeActiveCanvas(hudUI as ICanvasController);
         EventManager.Instance.dialogueEvents.OnNextDialogueLine += UpdateDialogueText;
         EventManager.Instance.dialogueEvents.OnDialogueChoicesEnabled += DisplayDialogueChoices;
         EventManager.Instance.dialogueEvents.OnDialogueChoicesDisabled += HideDialogueChoices;
@@ -57,44 +80,51 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.uiEvents.OnDisplayInteractionPromptRequest += (requesterID, message) => hudUI.ShowInteractionPrompt(message);
         EventManager.Instance.uiEvents.OnHideInteractionPromptRequest += (requesterID, message) => hudUI.HideInteractionPrompt(message);
 
+        // Subscribing to SceneEvents
+        EventManager.Instance.sceneEvents.OnGameSceneLoaded += newGameScene => ChangeActiveCanvas(hudUI as ICanvasController);
+        EventManager.Instance.sceneEvents.OnGameSceneUnloaded += oldGameScene => ChangeActiveCanvas(mainMenuUI as ICanvasController);
+
         // Notify EventManager that UIManager is listening
         EventManager.Instance.internalEvents.ManagerStartedListening(gameObject.name);
-
-        // Initialize canvas controllers
-        dialogueUI = new DialogueUI(dialogueCanvas, dialogueBox, dialogueText, dialogueChoiceButtons);
-        hudUI = new HUDUI(hudCanvas, interactablePrompt);
-        pauseUI = new PauseUI(pauseMenuCanvas);
-
-        hudUI.StartHUDUI();
     }
 
-    // Callback methods from the eventManager
-    public void StartDialogueUI()
+    public void ChangeActiveCanvas(ICanvasController canvasController)
     {
-        dialogueUI.StartDialogueUI();
-        hudUI.CloseHUDUI();
-    }
+        activeCanvas.CloseCanvas();
+        canvasController.StartCanvas();
 
-    public void CloseDialogueUI()
-    {
-        dialogueUI.CloseDialogueUI();
-        hudUI.StartHUDUI();
+        activeCanvas = canvasController;
+
+        EventManager.Instance.uiEvents.ActiveCanvasChanged(canvasController.canvasObject.name);
     }
 
     public void UpdateDialogueText(string nextLine) => dialogueUI.UpdateDialogueText(nextLine);
     public void DisplayDialogueChoices(List<string> options) => dialogueUI.DisplayDialogueChoices(options);
     public void HideDialogueChoices() => dialogueUI.HideDialogueChoices();
-    public void UpdateDialogueBoxInterface(Sprite dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox);
-    public void HandlePause() => pauseUI.TogglePauseCanvas(); // Later:  Verify wich canvas in currently enabled and set pause menu based on that
+    public void UpdateDialogueBoxInterface(Sprite dialogueBox) => dialogueUI.UpdateDialogueBoxInterface(dialogueBox); 
+    public void HandlePause() // Later:  Verify wich canvas in currently enabled and set pause menu based on that
+    {
+        if (pauseMenuCanvas.gameObject.activeSelf) ChangeActiveCanvas(hudUI as ICanvasController);
+        else ChangeActiveCanvas(pauseUI as ICanvasController);
+    }
 
     // Callback methods from buttons
+    // MainMenu buttons
+    public void OnNewGame() => mainMenuUI.OnNewGame();
+    public void OnContinueGame() => mainMenuUI.OnContinueGame();
+    public void OnOpenOptions() => mainMenuUI.OnOpenOptions();
+    public void OnOpenCredits() => mainMenuUI.OnOpenCredits();
+    public void OnOpenAbout() => mainMenuUI.OnOpenAbout();
+    public void OnExitGame() => mainMenuUI.OnExitGame();
+
+    // Ingame menu buttons
     public void OnReturnToGame() => pauseUI.OnReturnToGame();
     public void OnSave() => pauseUI.OnSave();
     public void OnOpenInventory() => pauseUI.OnOpenInventory();
     public void OnOpenQuests() => pauseUI.OnOpenQuests();
     public void OnOpenStates() => pauseUI.OnOpenStates();
     public void OnOpenMap() => pauseUI.OnOpenMap();
-    public void OnOpenOptions() => pauseUI.OnOpenOptions();
-    public void OnExit() => pauseUI.OnExit();
+    //public void OnOpenOptions() => pauseUI.OnOpenOptions(); -> the ingame button will call the same method used by the mainMenu button
+    public void OnExitToMenu() => pauseUI.OnExitToMenu();
 
 }

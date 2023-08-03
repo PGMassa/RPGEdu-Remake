@@ -23,6 +23,8 @@ public class EventManager : MonoBehaviour
     public DialogueEvents dialogueEvents { get; private set; }
     public NPCEvents npcEvents { get; private set; }
     public UIEvents uiEvents { get; set; }
+    public SavingAndLoadingEvents savingAndLoadingEvents { get; set; }
+    public SceneEvents sceneEvents { get; set; }
 
 
     private void Awake()
@@ -40,6 +42,8 @@ public class EventManager : MonoBehaviour
         dialogueEvents = new DialogueEvents();
         npcEvents = new NPCEvents();
         uiEvents = new UIEvents();
+        savingAndLoadingEvents = new SavingAndLoadingEvents();
+        sceneEvents = new SceneEvents();
 
         Instance = this;
         initializationTracker = new InitializationTracker(trackedManagers);

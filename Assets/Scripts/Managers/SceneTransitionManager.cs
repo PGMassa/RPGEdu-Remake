@@ -6,9 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour
 {
-    [Header("First scene to be loaded")]
-    [SerializeField] string firstScene;
-
     // keeps track of the wich gameScene is loaded. There can be only one!
     private string currentLoadedGameScene;
 
@@ -21,19 +18,10 @@ public class SceneTransitionManager : MonoBehaviour
     {
         yield return new WaitUntil(() => EventManager.Instance != null);
 
-        // Subscribe to get notified when all the managers are ready
-        EventManager.Instance.internalEvents.OnAllManagersReady += () => StartCoroutine(ChangeGameScene(firstScene));
+        EventManager.Instance.sceneEvents.OnSceneTransitionRequested += newScene => StartCoroutine(ChangeGameScene(newScene));
+        EventManager.Instance.sceneEvents.OnUnloadGameSceneRequested += () => StartCoroutine(UnloadCurrentActiveGameScene());
 
         EventManager.Instance.internalEvents.ManagerStartedListening(gameObject.name);
-    }
-
-    private void OnDisable()
-    {
-        // Unsubscribe to get notified when all the managers are ready
-        EventManager.Instance.internalEvents.OnAllManagersReady -= () => StartCoroutine(ChangeGameScene(firstScene));
-
-        // Notify EventManager that SceneTransitionManager is listening
-        EventManager.Instance.internalEvents.ManagerStoppedListening(gameObject.name);
     }
 
     /*
@@ -59,6 +47,24 @@ public class SceneTransitionManager : MonoBehaviour
         asyncLoad.allowSceneActivation = true;
 
         currentLoadedGameScene = scene;
+
+        EventManager.Instance.sceneEvents.GameSceneLoaded(scene);
+    }
+
+    // Unload current gameScene. The main gameScene (with the managers) is kept active -> used to return to main menu
+    private IEnumerator UnloadCurrentActiveGameScene()
+    {
+        if(currentLoadedGameScene != null)
+        {
+            AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(currentLoadedGameScene);
+
+            yield return new WaitUntil(() => asyncUnload.isDone);
+
+            EventManager.Instance.sceneEvents.GameSceneUnloaded(currentLoadedGameScene);
+            currentLoadedGameScene = null;
+        }
+
+
     }
 
 }

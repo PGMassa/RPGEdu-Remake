@@ -1,9 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
+    [SerializeField] private GameObject pauseCanvas;
+
     private void OnEnable()
     {
         // Doing it on a coroutine to avoid "execution order" shenanigans
@@ -14,12 +15,11 @@ public class PauseManager : MonoBehaviour
     {
         yield return new WaitUntil(() => EventManager.Instance != null);
 
-        EventManager.Instance.uiEvents.OnPauseMenuOpened += () => TogglePause(true);
-        EventManager.Instance.uiEvents.OnPauseMenuClosed += () => TogglePause(false);
+        EventManager.Instance.uiEvents.OnActiveCanvasChanged += TogglePause;
     }
 
-    private void TogglePause(bool pauseGame)
+    private void TogglePause(string canvasName)
     {
-        Time.timeScale = pauseGame ? 0 : 1;
+        Time.timeScale = pauseCanvas.name.Equals(canvasName) ? 0 : 1;
     }
 }

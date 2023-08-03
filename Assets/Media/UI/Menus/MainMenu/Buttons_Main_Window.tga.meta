@@ -1,0 +1,500 @@
+fileFormatVersion: 2
+guid: ffd3a05b542194c449d9ff386bd2b787
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Buttons_Main_Window_0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 273
+        width: 178
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f277650975f131b459a6934b50b3eeff
+      internalID: -1708331912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_14
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 270
+        width: 178
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a27fd128b5e01b341b70f73cbd8b2250
+      internalID: -931024417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_15
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 213
+        width: 226
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4678a81e6dacc34f978fa5c9b0e20e7
+      internalID: 1108729255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_34
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 210
+        width: 226
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82abc704ff6b0c04ba5041ac558e0338
+      internalID: -1127102347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_35
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 161
+        width: 147
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d6b305dfd1df6c42acabb27a4abef09
+      internalID: 2146706557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_40
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 158
+        width: 147
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1242e0174cf85eb4c9f9ffb33e3514a9
+      internalID: 804126294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_41
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 109
+        width: 163
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5107533bd5778af4493dd325212901f5
+      internalID: 403003450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_52
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 106
+        width: 163
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 254a4fc968293bd4285cb89da530c168
+      internalID: -955430532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_53
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 63
+        width: 138
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4442de4576471b34e8ffa9a53f0eee8f
+      internalID: 803351510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_57
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 60
+        width: 138
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18d1c408bc704a541954aee514ef0662
+      internalID: -1168976686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_58
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 3
+        width: 123
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68ef0a70a9773ce428c42bc26ee759e8
+      internalID: 765427176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Main_Window_64
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 0
+        width: 123
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44e39564b14711b46b1d47cd44d4e2a1
+      internalID: 125670485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: e015fbe807f183b4db20c455a09e75ce
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Buttons_Main_Window_0: -1708331912
+      Buttons_Main_Window_1: 1356263572
+      Buttons_Main_Window_10: 333664107
+      Buttons_Main_Window_11: -1649924635
+      Buttons_Main_Window_12: 496728818
+      Buttons_Main_Window_13: 1750567084
+      Buttons_Main_Window_14: -931024417
+      Buttons_Main_Window_15: 1108729255
+      Buttons_Main_Window_16: -1485029773
+      Buttons_Main_Window_17: -1341472414
+      Buttons_Main_Window_18: 2013877433
+      Buttons_Main_Window_19: 2123759795
+      Buttons_Main_Window_2: -359729190
+      Buttons_Main_Window_20: 1133520035
+      Buttons_Main_Window_21: 44195656
+      Buttons_Main_Window_22: -1198999427
+      Buttons_Main_Window_23: -1941879436
+      Buttons_Main_Window_24: -1720410352
+      Buttons_Main_Window_25: 1747010955
+      Buttons_Main_Window_26: -1023603515
+      Buttons_Main_Window_27: 521803020
+      Buttons_Main_Window_28: 888879187
+      Buttons_Main_Window_29: 2042997965
+      Buttons_Main_Window_3: -1547111625
+      Buttons_Main_Window_30: 224870819
+      Buttons_Main_Window_31: 1407642612
+      Buttons_Main_Window_32: 1212286343
+      Buttons_Main_Window_33: -885556290
+      Buttons_Main_Window_34: -1127102347
+      Buttons_Main_Window_35: 2146706557
+      Buttons_Main_Window_36: -1251270572
+      Buttons_Main_Window_37: 533582880
+      Buttons_Main_Window_38: -424033243
+      Buttons_Main_Window_39: 822076470
+      Buttons_Main_Window_4: -1876322395
+      Buttons_Main_Window_40: 804126294
+      Buttons_Main_Window_41: 403003450
+      Buttons_Main_Window_42: -887887110
+      Buttons_Main_Window_43: 1413193611
+      Buttons_Main_Window_44: -1169208184
+      Buttons_Main_Window_45: -2108934984
+      Buttons_Main_Window_46: 841695382
+      Buttons_Main_Window_47: 1472690743
+      Buttons_Main_Window_48: -20882047
+      Buttons_Main_Window_49: 1348283156
+      Buttons_Main_Window_5: -1802222084
+      Buttons_Main_Window_50: 224230799
+      Buttons_Main_Window_51: -1416997865
+      Buttons_Main_Window_52: -955430532
+      Buttons_Main_Window_53: 803351510
+      Buttons_Main_Window_54: 2017217960
+      Buttons_Main_Window_55: 1143431817
+      Buttons_Main_Window_56: -176650977
+      Buttons_Main_Window_57: -1168976686
+      Buttons_Main_Window_58: 765427176
+      Buttons_Main_Window_59: 1121669727
+      Buttons_Main_Window_6: -1417393765
+      Buttons_Main_Window_60: -1144486558
+      Buttons_Main_Window_61: -1055895718
+      Buttons_Main_Window_62: -1031659027
+      Buttons_Main_Window_63: -1613336428
+      Buttons_Main_Window_64: 125670485
+      Buttons_Main_Window_7: 501511934
+      Buttons_Main_Window_8: 2112846476
+      Buttons_Main_Window_9: 67740456
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
